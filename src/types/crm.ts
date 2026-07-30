@@ -1,12 +1,11 @@
 export type CallStatus =
   | 'Not Called'
-  | 'No Answer'
-  | 'Not Interested'
   | 'Interested'
-  | 'Follow-up Needed'
-  | 'Meeting Booked'
+  | 'Busy'
+  | 'Wrong Number'
+  | 'No Answer'
   | 'Converted'
-  | 'Dead';
+  | 'Lost';
 
 export type Category =
   | 'Doctor'
@@ -29,15 +28,29 @@ export interface Lead {
   email?: string;
   website?: string;
   maps_link?: string;
+  
+  // Google Scraper Fields
   review_count?: number;
   rating?: number;
+  business_age?: string;
+  address?: string;
+  business_status?: string;
+  opening_hours?: string;
+  latest_review?: string;
+  
   category: string;
   city_area?: string;
   batch_label: string;
   assigned_to: CallerName;
+  
+  // CRM Workflow Fields
   status: CallStatus;
+  priority?: 'High' | 'Medium' | 'Low' | 'None';
   notes: string;
   follow_up_date?: string;
+  last_contact?: string;
+  remarks_preview?: string;
+  
   created_at: string;
   updated_at: string;
 }

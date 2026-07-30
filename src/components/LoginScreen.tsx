@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { UserRole } from '../types/crm';
 import { ACCOUNTS } from '../lib/auth';
-import { Shield, User, Lock, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 
 interface LoginScreenProps {
   onLoginSuccess: (role: UserRole) => void;
@@ -22,113 +21,78 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       setErrorMsg('');
       onLoginSuccess(selectedUser);
     } else {
-      setErrorMsg(`Incorrect password for ${selectedUser}. Please try again.`);
+      setErrorMsg('Invalid password for selected role.');
     }
   };
 
-  const handleSelectUser = (role: UserRole) => {
-    setSelectedUser(role);
-    setPassword('');
-    setErrorMsg('');
-  };
-
   return (
-    <div className="login-splash-wrapper">
-      <div className="login-card">
-        {/* Splash Branding Header */}
-        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-          <div className="login-brand-icon">
-            <Sparkles size={24} color="#0f172a" />
-          </div>
-          <h1 className="login-headline">Ready to work with the best version of yourself</h1>
-          <p className="login-subtext">Siyara Lead Management CRM &bull; Internal Desk</p>
+    <div className="login-container">
+      <div className="login-box">
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <h1 style={{ fontSize: 'var(--font-xl)', color: 'var(--text-main)', letterSpacing: '-0.5px' }}>
+            SIYARA CRM
+          </h1>
+          <p style={{ fontSize: 'var(--font-sm)', color: 'var(--text-muted)', marginTop: '4px' }}>
+            Enterprise Lead Management
+          </p>
         </div>
 
-        {/* User Role Selection Grid (Admin, User 1, User 2) */}
-        <div style={{ marginBottom: '1.5rem' }}>
-          <label className="field-label" style={{ marginBottom: '0.65rem', display: 'block', textAlign: 'center' }}>
-            Select Team Member
-          </label>
-
-          <div className="login-user-grid">
-            <button
-              type="button"
-              className={`login-user-card ${selectedUser === 'Admin' ? 'active-admin' : ''}`}
-              onClick={() => handleSelectUser('Admin')}
+        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          
+          <div>
+            <label className="label">Select Role</label>
+            <select 
+              className="input-field"
+              value={selectedUser}
+              onChange={(e) => {
+                setSelectedUser(e.target.value as UserRole);
+                setPassword('');
+                setErrorMsg('');
+              }}
+              style={{ backgroundColor: 'white', cursor: 'pointer' }}
             >
-              <div className="login-user-avatar admin">
-                <Shield size={18} />
-              </div>
-              <div className="login-user-name">Admin</div>
-              <div className="login-user-role">Founder</div>
-            </button>
-
-            <button
-              type="button"
-              className={`login-user-card ${selectedUser === 'User 1' ? 'active-user1' : ''}`}
-              onClick={() => handleSelectUser('User 1')}
-            >
-              <div className="login-user-avatar user1">
-                <User size={18} />
-              </div>
-              <div className="login-user-name">User 1</div>
-              <div className="login-user-role">Caller Desk</div>
-            </button>
-
-            <button
-              type="button"
-              className={`login-user-card ${selectedUser === 'User 2' ? 'active-user2' : ''}`}
-              onClick={() => handleSelectUser('User 2')}
-            >
-              <div className="login-user-avatar user2">
-                <User size={18} />
-              </div>
-              <div className="login-user-name">User 2</div>
-              <div className="login-user-role">Caller Desk</div>
-            </button>
+              <option value="Admin">Admin / Manager</option>
+              <option value="User 1">Caller Desk 1</option>
+              <option value="User 2">Caller Desk 2</option>
+            </select>
           </div>
-        </div>
 
-        {/* Password Form */}
-        <form onSubmit={handleLogin} className="login-form">
-          <div className="field-group">
-            <label className="field-label">Password for {selectedUser}</label>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <Lock size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '12px' }} />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setErrorMsg('');
-                }}
-                placeholder="Enter password..."
-                className="date-input"
-                style={{ paddingLeft: '38px', width: '100%' }}
-                autoFocus
-              />
-            </div>
+          <div>
+            <label className="label">Password</label>
+            <input
+              type="password"
+              className="input-field"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoFocus
+            />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: 'var(--font-xs)', color: 'var(--text-muted)', cursor: 'pointer' }}>
+              <input type="checkbox" />
+              Remember Me
+            </label>
+            <a href="#" style={{ fontSize: 'var(--font-xs)', color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}>
+              Forgot Password?
+            </a>
           </div>
 
           {errorMsg && (
-            <div className="login-error-alert">
-              <AlertCircle size={16} color="#dc2626" />
-              <span>{errorMsg}</span>
+            <div style={{ padding: '8px 12px', backgroundColor: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '4px', color: '#DC2626', fontSize: '13px', fontWeight: 500 }}>
+              {errorMsg}
             </div>
           )}
 
-          <button type="submit" className="primary-btn" style={{ width: '100%', marginTop: '0.5rem' }}>
-            <span>Access Dashboard</span>
-            <ArrowRight size={16} />
+          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '8px', padding: '10px' }}>
+            Login to Workspace
           </button>
         </form>
 
-        {/* Password Hints */}
-        <div className="login-hints">
-          <div style={{ fontWeight: 700, marginBottom: '0.25rem', color: '#475569' }}>
-            Default Passwords:
-          </div>
-          <div>Admin: <code>changeme1</code> &bull; User 1: <code>changeme2</code> &bull; User 2: <code>changeme3</code></div>
+        <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '11px', color: 'var(--text-muted)' }}>
+          <div>Default Passwords:</div>
+          <div style={{ marginTop: '4px' }}>Admin: changeme1 | User 1: changeme2 | User 2: changeme3</div>
         </div>
       </div>
     </div>

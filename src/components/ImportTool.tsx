@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { ImportSummary, Lead } from '../types/crm';
-import { importPastedLeads } from '../lib/storage';
 import { FilePlus, CheckCircle2, Sparkles } from 'lucide-react';
 
 interface ImportToolProps {
@@ -18,17 +17,24 @@ export const ImportTool: React.FC<ImportToolProps> = ({ onImportComplete }) => {
 Dr. Rahul Kapoor Dental Clinic\t+919876500111\tdrrahul@gmail.com\thttps://rahuldental.com\thttps://maps.google.com/?q=rahul+dental\t4.9\t140
 Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://eliteweddings.in\thttps://maps.google.com/?q=elite+weddings\t4.8\t88`;
 
-  const handleImport = () => {
+  const handleImport = async () => {
     if (!rawText.trim()) return;
     setIsProcessing(true);
 
-    setTimeout(() => {
-      const { summary, updatedLeads } = importPastedLeads(rawText);
-      setLastSummary(summary);
-      onImportComplete(updatedLeads, summary);
+    try {
+      // In Phase 2, this will POST to a background worker
+      // For now, we simulate a successful import
+      setTimeout(() => {
+        const dummySummary = { pastedCount: 0, duplicateCount: 0, addedCount: 0, batchLabel: 'Simulation' };
+        setLastSummary(dummySummary);
+        onImportComplete([], dummySummary);
+        setIsProcessing(false);
+        setRawText('');
+      }, 1000);
+    } catch (e) {
+      console.error(e);
       setIsProcessing(false);
-      setRawText('');
-    }, 300);
+    }
   };
 
   const handleLoadSample = () => {

@@ -3,57 +3,19 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole, Lead, ImportSummary } from '../types/crm';
 import { getLeads, updateSingleLead } from '../lib/storage';
-import { Navbar } from '../components/Navbar';
+import { Sidebar } from '../components/layout/Sidebar';
+import { TopNavbar } from '../components/layout/TopNavbar';
 import { LoginScreen } from '../components/LoginScreen';
 import { CallerDashboard } from '../components/CallerDashboard';
 import { AdminOverview } from '../components/AdminOverview';
 
 export default function Home() {
   const [loggedInRole, setLoggedInRole] = useState<UserRole | null>(null);
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Initialize leads from localStorage on mount
-  useEffect(() => {
-    const loaded = getLeads();
-    setLeads(loaded);
-    setIsLoaded(true);
-  }, []);
-
-  const handleUpdateLead = (updatedLead: Lead) => {
-    const nextLeads = updateSingleLead(updatedLead);
-    setLeads([...nextLeads]);
-  };
-
-  const handleImportComplete = (updatedLeads: Lead[], summary: ImportSummary) => {
-    setLeads([...updatedLeads]);
-  };
-
-  const handleResetData = (resetLeads: Lead[]) => {
-    setLeads([...resetLeads]);
-  };
+  const [activeMenu, setActiveMenu] = useState('dashboard');
 
   const handleLogout = () => {
     setLoggedInRole(null);
   };
-
-  if (!isLoaded) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          height: '100vh',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--text-muted)',
-          fontSize: '1rem',
-          fontWeight: 600,
-        }}
-      >
-        Loading Siyara CRM...
-      </div>
-    );
-  }
 
   // Show Login Screen if no user is authenticated
   if (!loggedInRole) {
@@ -61,31 +23,30 @@ export default function Home() {
   }
 
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-light)' }}>
-      <Navbar
-        currentRole={loggedInRole}
-        onLogout={handleLogout}
-        totalLeadsCount={leads.length}
+    <div className="app-layout">
+      {/* Sidebar */}
+      <Sidebar 
+        role={loggedInRole} 
+        activeMenu={activeMenu} 
+        onNavigate={setActiveMenu} 
+        onLogout={handleLogout} 
       />
 
-      <div className="container">
-        {loggedInRole === 'Admin' && (
-          <AdminOverview
-            leads={leads}
-            onUpdateLead={handleUpdateLead}
-            onImportComplete={handleImportComplete}
-            onResetData={handleResetData}
-          />
-        )}
-
-        {(loggedInRole === 'User 1' || loggedInRole === 'User 2') && (
-          <CallerDashboard
-            callerName={loggedInRole}
-            leads={leads}
-            onUpdateLead={handleUpdateLead}
-          />
-        )}
+      {/* Main Content Area */}
+      <div className="main-content">
+        <TopNavbar role={loggedInRole} activeMenu={activeMenu} />
+        
+        <div className="workspace">
+          {loggedInRole === 'Admin' ? (
+            <AdminOverview
+              onImportComplete={() => {}} // TODO: Hook up to import engine
+              onResetData={() => {}}
+            />
+          ) : (
+            <CallerDashboard callerName={loggedInRole} />
+          )}
+        </div>
       </div>
-    </main>
+    </div>
   );
 }

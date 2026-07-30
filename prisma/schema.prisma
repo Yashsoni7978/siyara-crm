@@ -1,0 +1,78 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  users     User[]
+  leads     Lead[]
+}
+
+model User {
+  id             String       @id @default(uuid())
+  organizationId String
+  email          String       @unique
+  name           String
+  role           String       // Admin, Manager, Caller
+  createdAt      DateTime     @default(now())
+  
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  leads          Lead[]       @relation("AssignedLeads")
+  activities     Activity[]
+}
+
+model Lead {
+  id             String       @id @default(uuid())
+  organizationId String
+  assignedToId   String?
+  
+  // Business Data
+  businessName   String
+  phone          String
+  website        String?
+  mapsLink       String?
+  rating         Float?
+  reviewCount    Int?
+  category       String
+  address        String?
+  cityArea       String?
+  businessAge    String?
+  openingHours   String?
+  latestReview   String?
+
+  // CRM Metadata
+  status         String       @default("Not Called")
+  priority       String       @default("None")
+  followUpDate   DateTime?
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Relations
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  assignedTo     User?        @relation("AssignedLeads", fields: [assignedToId], references: [id])
+  activities     Activity[]
+}
+
+model Activity {
+  id          String   @id @default(uuid())
+  leadId      String
+  userId      String?
+  type        String   // StatusChange, Note, Import, Reassign
+  oldValue    String?
+  newValue    String?
+  description String?
+  timestamp   DateTime @default(now())
+  
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  user        User?    @relation(fields: [userId], references: [id])
+}
