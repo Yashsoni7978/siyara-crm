@@ -38,7 +38,7 @@ export const MasterDetailLayout: React.FC<MasterDetailLayoutProps> = ({ leads, o
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
                   <span style={{ fontWeight: 600, fontSize: '13px', color: 'var(--text-main)', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {lead.business_name}
+                    {lead.businessName}
                   </span>
                   <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: statusStyle.color, marginTop: '4px' }} />
                 </div>
@@ -59,10 +59,10 @@ export const MasterDetailLayout: React.FC<MasterDetailLayoutProps> = ({ leads, o
             <div style={{ padding: '24px', borderBottom: '1px solid var(--border-main)', backgroundColor: 'var(--bg-main)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
-                  <h2 style={{ fontSize: 'var(--font-xl)', fontWeight: 700, marginBottom: '4px' }}>{activeLead.business_name}</h2>
+                  <h2 style={{ fontSize: 'var(--font-xl)', fontWeight: 700, marginBottom: '4px' }}>{activeLead.businessName}</h2>
                   <div style={{ display: 'flex', gap: '16px', fontSize: '13px', color: 'var(--text-muted)' }}>
                     <span>{activeLead.phone}</span>
-                    <span>{activeLead.address || activeLead.city_area || 'No address'}</span>
+                    <span>{activeLead.address || activeLead.cityArea || 'No address'}</span>
                     <span>{activeLead.category}</span>
                   </div>
                 </div>
@@ -129,8 +129,8 @@ export const MasterDetailLayout: React.FC<MasterDetailLayoutProps> = ({ leads, o
                       <input 
                         type="date" 
                         className="input-field" 
-                        value={activeLead.follow_up_date || ''}
-                        onChange={e => handleUpdate({ follow_up_date: e.target.value })}
+                        value={activeLead.followUpDate || ''}
+                        onChange={e => handleUpdate({ followUpDate: e.target.value })}
                       />
                     </div>
                   </div>
@@ -151,15 +151,15 @@ export const MasterDetailLayout: React.FC<MasterDetailLayoutProps> = ({ leads, o
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                   <div>
                     <label className="label">Google Rating</label>
-                    <div style={{ fontSize: '14px', fontWeight: 600 }}>{activeLead.rating || 'N/A'} ({activeLead.review_count || 0} reviews)</div>
+                    <div style={{ fontSize: '14px', fontWeight: 600 }}>{activeLead.rating || 'N/A'} ({activeLead.reviewCount || 0} reviews)</div>
                   </div>
                   <div>
                     <label className="label">Business Age</label>
-                    <div style={{ fontSize: '14px', fontWeight: 500 }}>{activeLead.business_age || 'Unknown'}</div>
+                    <div style={{ fontSize: '14px', fontWeight: 500 }}>{activeLead.businessAge || 'Unknown'}</div>
                   </div>
                   <div>
                     <label className="label">Opening Hours</label>
-                    <div style={{ fontSize: '14px' }}>{activeLead.opening_hours || 'Not provided'}</div>
+                    <div style={{ fontSize: '14px' }}>{activeLead.openingHours || 'Not provided'}</div>
                   </div>
                   <div>
                     <label className="label">Website</label>
@@ -170,11 +170,11 @@ export const MasterDetailLayout: React.FC<MasterDetailLayoutProps> = ({ leads, o
                   <div style={{ gridColumn: 'span 2' }}>
                     <label className="label">Latest Review</label>
                     <div style={{ fontSize: '13px', fontStyle: 'italic', backgroundColor: 'var(--bg-main)', padding: '12px', borderRadius: '4px' }}>
-                      "{activeLead.latest_review || 'No reviews recorded.'}"
+                      "{activeLead.latestReview || 'No reviews recorded.'}"
                     </div>
                   </div>
                   <div style={{ gridColumn: 'span 2' }}>
-                    <a href={activeLead.maps_link} target="_blank" rel="noreferrer" className="btn btn-secondary">Open in Google Maps</a>
+                    <a href={activeLead.mapsLink} target="_blank" rel="noreferrer" className="btn btn-secondary">Open in Google Maps</a>
                   </div>
                 </div>
               )}

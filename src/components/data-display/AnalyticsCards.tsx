@@ -3,10 +3,11 @@ import { Lead } from '../../types/crm';
 
 interface AnalyticsCardsProps {
   leads: Lead[];
+  totalLeads?: number;
 }
 
-export const AnalyticsCards: React.FC<AnalyticsCardsProps> = ({ leads }) => {
-  const total = leads.length;
+export const AnalyticsCards: React.FC<AnalyticsCardsProps> = ({ leads, totalLeads }) => {
+  const total = totalLeads ?? leads.length;
   const converted = leads.filter(l => l.status === 'Converted').length;
   const interested = leads.filter(l => l.status === 'Interested').length;
   const followUps = leads.filter(l => l.status === 'Busy' || l.status === 'No Answer').length;

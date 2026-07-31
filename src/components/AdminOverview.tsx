@@ -23,6 +23,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
   const [selectedCaller, setSelectedCaller] = useState<string>('ALL');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalLeads, setTotalLeads] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch leads from server
@@ -42,6 +43,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
       if (json.data) {
         setLeads(json.data);
         setTotalPages(json.meta.totalPages);
+        setTotalLeads(json.meta.total);
       }
     } catch (e) {
       console.error(e);
@@ -61,7 +63,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
   return (
     <div>
       {/* KPIs */}
-      <AnalyticsCards leads={leads} />
+      <AnalyticsCards leads={leads} totalLeads={totalLeads} />
 
       {/* Import Tool */}
       <div style={{ marginBottom: '24px' }}>

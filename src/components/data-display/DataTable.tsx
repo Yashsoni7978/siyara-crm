@@ -34,39 +34,43 @@ export const DataTable: React.FC<DataTableProps> = ({ leads, onRowClick }) => {
             if (lead.priority === 'Low') priorityColor = '#16A34A';
 
             return (
-              <tr 
-                key={lead.id} 
-                onClick={() => onRowClick && onRowClick(lead)}
-                style={{ cursor: onRowClick ? 'pointer' : 'default' }}
-              >
-                <td style={{ fontWeight: 500, maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {lead.business_name}
+              <tr key={lead.id} onClick={() => onRowClick && onRowClick(lead)} style={{ cursor: onRowClick ? 'pointer' : 'default' }}>
+                <td style={{ fontWeight: 600, color: 'var(--text-main)' }}>
+                  {lead.businessName}
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400, marginTop: '2px' }}>
+                    {lead.phone}
+                  </div>
                 </td>
-                <td style={{ fontFamily: 'monospace' }}>{lead.phone || 'N/A'}</td>
-                <td>{lead.category}</td>
-                <td style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {lead.city_area || lead.address || '-'}
-                </td>
-                <td>
-                  {lead.rating ? (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <span style={{ color: '#F59E0B', fontWeight: 600 }}>{lead.rating}</span>
-                      <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>({lead.review_count})</span>
-                    </span>
-                  ) : '-'}
+                <td>{lead.phone}</td>
+                <td style={{ color: 'var(--text-muted)' }}>{lead.category || '-'}</td>
+                <td style={{ color: 'var(--text-muted)' }}>
+                  {lead.cityArea || lead.address || '-'}
                 </td>
                 <td>
-                  <span className="badge" style={{ backgroundColor: statusStyle.bg, color: statusStyle.color, border: `1px solid ${statusStyle.border}` }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span style={{ fontWeight: 600, color: 'var(--warning-dark)' }}>{lead.rating || '-'}</span>
+                    {lead.reviewCount ? (
+                      <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>({lead.reviewCount})</span>
+                    ) : null}
+                  </div>
+                </td>
+                <td>
+                  <span 
+                    className="badge" 
+                    style={{ backgroundColor: statusStyle.bg, color: statusStyle.color }}
+                  >
                     {lead.status}
                   </span>
                 </td>
                 <td>
                   {lead.priority && lead.priority !== 'None' ? (
-                    <span style={{ color: priorityColor, fontWeight: 600, fontSize: '12px' }}>{lead.priority}</span>
+                    <span className="badge" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>
+                      {lead.priority}
+                    </span>
                   ) : '-'}
                 </td>
-                <td>{lead.assigned_to}</td>
-                <td>{lead.follow_up_date || '-'}</td>
+                <td>{lead.assignedTo?.name || '-'}</td>
+                <td>{lead.followUpDate || '-'}</td>
               </tr>
             );
           })}

@@ -23,36 +23,37 @@ export type UserRole = 'Admin' | 'User 1' | 'User 2';
 
 export interface Lead {
   id: string;
-  business_name: string;
+  businessName: string;
   phone: string;
   email?: string;
   website?: string;
-  maps_link?: string;
+  mapsLink?: string;
   
   // Google Scraper Fields
-  review_count?: number;
+  reviewCount?: number;
   rating?: number;
-  business_age?: string;
+  businessAge?: string;
   address?: string;
-  business_status?: string;
-  opening_hours?: string;
-  latest_review?: string;
+  businessStatus?: string;
+  openingHours?: string;
+  latestReview?: string;
   
   category: string;
-  city_area?: string;
-  batch_label: string;
-  assigned_to: CallerName;
+  cityArea?: string;
+  listName?: string;
+  assignedToId?: string;
+  assignedTo?: { name: string };
   
   // CRM Workflow Fields
   status: CallStatus;
   priority?: 'High' | 'Medium' | 'Low' | 'None';
   notes: string;
-  follow_up_date?: string;
-  last_contact?: string;
-  remarks_preview?: string;
+  followUpDate?: string;
+  lastContact?: string;
+  remarksPreview?: string;
   
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ImportSummary {

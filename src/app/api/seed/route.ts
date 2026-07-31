@@ -23,26 +23,26 @@ export async function GET() {
     // 4. Map Initial Leads
     const leadsData = INITIAL_LEADS.map(lead => {
       let assignedUserId = null;
-      if (lead.assigned_to === 'User 1') assignedUserId = user1.id;
-      if (lead.assigned_to === 'User 2') assignedUserId = user2.id;
+      if (lead.assignedToId === 'User 1') assignedUserId = user1.id;
+      if (lead.assignedToId === 'User 2') assignedUserId = user2.id;
 
       return {
         organizationId: org.id,
         assignedToId: assignedUserId,
-        businessName: lead.business_name,
+        businessName: lead.businessName,
         phone: lead.phone,
         website: lead.website || null,
-        mapsLink: lead.maps_link || null,
+        mapsLink: lead.mapsLink || null,
         rating: lead.rating || null,
-        reviewCount: lead.review_count || null,
+        reviewCount: lead.reviewCount || null,
         category: lead.category,
-        address: lead.address || lead.city_area || null,
-        businessAge: lead.business_age || null,
-        openingHours: lead.opening_hours || null,
-        latestReview: lead.latest_review || null,
+        address: lead.address || lead.cityArea || null,
+        businessAge: lead.businessAge || null,
+        openingHours: lead.openingHours || null,
+        latestReview: lead.latestReview || null,
         status: lead.status,
         priority: lead.priority || 'None',
-        followUpDate: lead.follow_up_date ? new Date(lead.follow_up_date) : null
+        followUpDate: lead.followUpDate ? new Date(lead.followUpDate) : null
       };
     });
 
