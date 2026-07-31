@@ -6,7 +6,8 @@
     "dev": "npx next dev --webpack",
     "build": "npx next build --webpack",
     "start": "npx next start",
-    "lint": "npx eslint"
+    "lint": "npx eslint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
