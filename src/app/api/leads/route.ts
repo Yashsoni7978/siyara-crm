@@ -63,6 +63,28 @@ export async function GET(request: Request) {
     where.cityArea = { in: cityAreaArray };
   }
 
+  const followUpDue = searchParams.get('followUpDue');
+  if (followUpDue) {
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+
+    if (followUpDue === 'today') {
+      where.followUpDate = {
+        gte: startOfToday,
+        lte: endOfToday
+      };
+    } else if (followUpDue === 'overdue') {
+      where.followUpDate = {
+        lt: startOfToday
+      };
+    } else if (followUpDue === 'today_or_overdue') {
+      where.followUpDate = {
+        lte: endOfToday
+      };
+    }
+  }
+
   try {
     const [leads, total] = await Promise.all([
       prisma.lead.findMany({

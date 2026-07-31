@@ -7,6 +7,7 @@ import { TopNavbar } from '../components/layout/TopNavbar';
 import { LoginScreen } from '../components/LoginScreen';
 import { CallerDashboard } from '../components/CallerDashboard';
 import { AdminOverview } from '../components/AdminOverview';
+import { ImportTool } from '../components/ImportTool';
 
 export default function Home() {
   const [loggedInRole, setLoggedInRole] = useState<UserRole | null>(null);
@@ -20,6 +21,34 @@ export default function Home() {
   if (!loggedInRole) {
     return <LoginScreen onLoginSuccess={(role) => setLoggedInRole(role)} />;
   }
+
+  const renderAdminContent = () => {
+    switch (activeMenu) {
+      case 'dashboard':
+        return (
+          <AdminOverview
+            onImportComplete={() => {}} // TODO: Hook up to import engine
+            onResetData={() => {}}
+          />
+        );
+      case 'import':
+        return (
+          <ImportTool
+            organizationId="default-org"
+            onImportComplete={() => {}}
+          />
+        );
+      default:
+        return (
+          <div className="placeholder-page" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '1rem' }}>
+              {activeMenu.charAt(0).toUpperCase() + activeMenu.slice(1)}
+            </h2>
+            <p>This module is under construction.</p>
+          </div>
+        );
+    }
+  };
 
   return (
     <div className="app-layout">
@@ -36,14 +65,7 @@ export default function Home() {
         <TopNavbar role={loggedInRole} activeMenu={activeMenu} />
         
         <div className="workspace">
-          {loggedInRole === 'Admin' ? (
-            <AdminOverview
-              onImportComplete={() => {}} // TODO: Hook up to import engine
-              onResetData={() => {}}
-            />
-          ) : (
-            <CallerDashboard callerName={loggedInRole} />
-          )}
+          {loggedInRole === 'Admin' ? renderAdminContent() : <CallerDashboard callerName={loggedInRole} />}
         </div>
       </div>
     </div>

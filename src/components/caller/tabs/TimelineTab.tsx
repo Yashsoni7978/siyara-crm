@@ -13,13 +13,18 @@ interface Activity {
 interface TimelineTabProps {
   leadId: string;
   onAddNote: (note: string) => Promise<void>;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
-export const TimelineTab: React.FC<TimelineTabProps> = ({ leadId, onAddNote }) => {
+export const TimelineTab: React.FC<TimelineTabProps> = ({ leadId, onAddNote, onDirtyChange }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [newNote, setNewNote] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    onDirtyChange?.(newNote.trim().length > 0);
+  }, [newNote, onDirtyChange]);
 
   useEffect(() => {
     let mounted = true;

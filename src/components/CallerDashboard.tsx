@@ -11,9 +11,10 @@ import { CATEGORIES, STATUS_CONFIG } from '../lib/constants';
 
 interface CallerDashboardProps {
   callerName: CallerName;
+  activeMenu?: string;
 }
 
-export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) => {
+export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, activeMenu }) => {
   // Authentication & Init State
   const [userId, setUserId] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
@@ -29,6 +30,7 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) 
   const [activeLeadId, setActiveLeadId] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [activeTab, setActiveTab] = useState<WorkspaceTab>('overview');
+  const [isWorkspaceDirty, setIsWorkspaceDirty] = useState(false);
 
   // Filter & Sort State
   const [activeView, setActiveView] = useState<string>('all');
@@ -67,6 +69,15 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) 
         assignedToId: userId,
       });
 
+      if (activeMenu === 'today') {
+        params.set('followUpDue', 'today_or_overdue');
+        // By default sort follow-ups by due date ascending so oldest are first
+        if (!sortBy) {
+          params.set('sortBy', 'followUpDate');
+          params.set('sortOrder', 'asc');
+        }
+      }
+
       if (search) params.set('search', search);
       if (statusFilter.length > 0) params.set('status', statusFilter.join(','));
       if (priorityFilter.length > 0) params.set('priority', priorityFilter.join(','));
@@ -94,7 +105,7 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) 
     } finally {
       setIsLoading(false);
     }
-  }, [userId, page, search, statusFilter, priorityFilter, activeLeadId]); // Exclude phase G filters from deps for now
+  }, [userId, page, search, statusFilter, priorityFilter, activeLeadId, activeMenu]); // Exclude phase G filters from deps for now
 
   // Refetch when dependencies change
   useEffect(() => {
@@ -165,6 +176,16 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) 
     }
   };
 
+  const handleSelectLead = useCallback((id: string | null) => {
+    if (activeLeadId === id) return;
+    if (isWorkspaceDirty) {
+      const confirm = window.confirm('You have unsaved changes. Are you sure you want to switch leads?');
+      if (!confirm) return;
+    }
+    setActiveLeadId(id);
+    setIsWorkspaceDirty(false); // Reset dirty state on change
+  }, [activeLeadId, isWorkspaceDirty]);
+
   // Keyboard Shortcuts
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -186,7 +207,7 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) 
       }
 
       if (e.key === 'Escape') {
-        setActiveLeadId(null);
+        handleSelectLead(null);
         setFocusedIndex(-1);
         return;
       }
@@ -240,7 +261,7 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) 
     
     document.addEventListener('keydown', handleGlobalKeyDown);
     return () => document.removeEventListener('keydown', handleGlobalKeyDown);
-  }, [activeLeadId]);
+  }, [activeLeadId, handleSelectLead]);
 
   const activeLead = useMemo(() => leads.find(l => l.id === activeLeadId) || null, [leads, activeLeadId]);
 
@@ -283,7 +304,7 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) 
           leads={leads}
           activeLeadId={activeLeadId}
           focusedIndex={focusedIndex}
-          onSelectLead={setActiveLeadId}
+          onSelectLead={handleSelectLead}
           onFocusChange={setFocusedIndex}
           isLoading={isLoading}
           total={totalLeads}
@@ -301,6 +322,7 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) 
           onTabChange={setActiveTab}
           onUpdateLead={handleUpdateLead}
           onAddNote={handleAddNote}
+          onDirtyChange={setIsWorkspaceDirty}
         />
       </div>
 

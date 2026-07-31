@@ -15,6 +15,7 @@ interface CallerWorkspaceProps {
   onTabChange: (tab: WorkspaceTab) => void;
   onUpdateLead: (updates: Partial<Lead>) => Promise<void>;
   onAddNote: (note: string) => Promise<void>;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 export const CallerWorkspace: React.FC<CallerWorkspaceProps> = ({
@@ -23,9 +24,16 @@ export const CallerWorkspace: React.FC<CallerWorkspaceProps> = ({
   onTabChange,
   onUpdateLead,
   onAddNote,
+  onDirtyChange
 }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [pendingUpdates, setPendingUpdates] = useState<Partial<Lead>>({});
+  const [isTimelineDirty, setIsTimelineDirty] = useState(false);
+
+  React.useEffect(() => {
+    const hasPendingUpdates = Object.keys(pendingUpdates).length > 0;
+    onDirtyChange?.(hasPendingUpdates || isTimelineDirty);
+  }, [pendingUpdates, isTimelineDirty, onDirtyChange]);
 
   if (!lead) {
     return (
@@ -106,7 +114,7 @@ export const CallerWorkspace: React.FC<CallerWorkspaceProps> = ({
           <GoogleBusinessTab lead={lead} />
         )}
         {activeTab === 'timeline' && (
-          <TimelineTab leadId={lead.id} onAddNote={onAddNote} />
+          <TimelineTab leadId={lead.id} onAddNote={onAddNote} onDirtyChange={setIsTimelineDirty} />
         )}
         {activeTab === 'tasks' && (
           <TasksTab lead={lead} />

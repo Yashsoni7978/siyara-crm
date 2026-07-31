@@ -79,102 +79,220 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
   const invalidCount = previewRows.filter(r => r.status === 'Invalid').length;
 
   return (
-    <div className="panel" style={{ border: '1px solid var(--border-color)' }}>
-      <div className="panel-title">
-        <FilePlus size={20} color="#0f172a" />
-        <span>Import Scraped Batch (Instant Data Scraper)</span>
+    <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      
+      {/* Header Section */}
+      <div>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ background: 'linear-gradient(135deg, var(--primary) 0%, #818cf8 100%)', width: '40px', height: '40px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow-sm)' }}>
+            <FilePlus size={22} color="white" />
+          </div>
+          Import Scraped Leads
+        </h1>
+        <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>
+          Seamlessly import leads from Instant Data Scraper. Our intelligent system automatically detects and prevents duplicates.
+        </p>
       </div>
 
-      {!hasValidated ? (
-        <>
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '0.85rem' }}>
-            Paste raw export text from Instant Data Scraper. We will automatically detect duplicates against existing phone numbers.
-          </p>
+      <div style={{ 
+        background: 'rgba(255, 255, 255, 0.7)', 
+        backdropFilter: 'blur(12px)',
+        border: '1px solid rgba(255, 255, 255, 0.5)', 
+        borderRadius: 'var(--radius-lg)', 
+        boxShadow: 'var(--shadow-lg)',
+        overflow: 'hidden'
+      }}>
+        <div style={{ padding: '2rem' }}>
+          {!hasValidated ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ position: 'relative' }}>
+                <textarea
+                  value={rawText}
+                  onChange={(e) => setRawText(e.target.value)}
+                  placeholder="Paste your raw CSV or tab-separated data here..."
+                  style={{
+                    width: '100%',
+                    minHeight: '200px',
+                    padding: '1.25rem',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-main)',
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    fontSize: '0.95rem',
+                    fontFamily: 'monospace',
+                    resize: 'vertical',
+                    outline: 'none',
+                    boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)',
+                    transition: 'border-color 0.2s, box-shadow 0.2s'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = 'var(--primary)';
+                    e.target.style.boxShadow = '0 0 0 3px var(--primary-light)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'var(--border-main)';
+                    e.target.style.boxShadow = 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)';
+                  }}
+                />
+                {!rawText && (
+                  <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none', opacity: 0.1 }}>
+                    <Table size={64} />
+                  </div>
+                )}
+              </div>
 
-          <textarea
-            value={rawText}
-            onChange={(e) => setRawText(e.target.value)}
-            placeholder="Paste your Instant Data Scraper table / CSV here..."
-            className="import-box"
-          />
-
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
-            <button onClick={handleValidate} disabled={!rawText.trim() || isProcessing} className="primary-btn">
-              <Sparkles size={16} />
-              <span>{isProcessing ? 'Validating...' : 'Validate Import'}</span>
-            </button>
-            <button onClick={() => setRawText(sampleCsvSnippet)} className="secondary-btn">
-              Paste Sample Format
-            </button>
-          </div>
-        </>
-      ) : (
-        <div className="import-preview-container" style={{ marginTop: '1rem' }}>
-          <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', fontSize: '0.9rem' }}>
-            <div style={{ color: 'var(--text-main)', fontWeight: 600 }}>Total: {previewRows.length}</div>
-            <div style={{ color: '#059669', fontWeight: 600 }}>New: {newCount}</div>
-            <div style={{ color: '#dc2626', fontWeight: 600 }}>Duplicates: {duplicateCount}</div>
-            <div style={{ color: '#d97706', fontWeight: 600 }}>Invalid: {invalidCount}</div>
-          </div>
-          
-          <div style={{ maxHeight: '250px', overflowY: 'auto', border: '1px solid var(--border-main)', borderRadius: '4px', marginBottom: '1rem' }}>
-            <table style={{ width: '100%', fontSize: '0.85rem', borderCollapse: 'collapse' }}>
-              <thead style={{ position: 'sticky', top: 0, background: 'var(--bg-main)', borderBottom: '1px solid var(--border-main)' }}>
-                <tr>
-                  <th style={{ padding: '8px', textAlign: 'left' }}>Status</th>
-                  <th style={{ padding: '8px', textAlign: 'left' }}>Business</th>
-                  <th style={{ padding: '8px', textAlign: 'left' }}>Phone</th>
-                  <th style={{ padding: '8px', textAlign: 'left' }}>Category</th>
-                  <th style={{ padding: '8px', textAlign: 'left' }}>Message</th>
-                </tr>
-              </thead>
-              <tbody>
-                {previewRows.map((r, idx) => (
-                  <tr key={idx} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                    <td style={{ padding: '8px' }}>
-                      <span style={{ 
-                        padding: '2px 6px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600,
-                        background: r.status === 'New' ? '#ecfdf5' : r.status === 'Duplicate' ? '#fee2e2' : '#fef3c7',
-                        color: r.status === 'New' ? '#059669' : r.status === 'Duplicate' ? '#dc2626' : '#d97706'
-                      }}>
-                        {r.status}
-                      </span>
-                    </td>
-                    <td style={{ padding: '8px', fontWeight: 500 }}>{r.businessName || '-'}</td>
-                    <td style={{ padding: '8px', color: 'var(--text-muted)' }}>{r.phone || '-'}</td>
-                    <td style={{ padding: '8px', color: 'var(--text-muted)' }}>{r.category || '-'}</td>
-                    <td style={{ padding: '8px', color: 'var(--text-muted)' }}>{r.validationMessage || '-'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-            <button onClick={() => handleImport(true)} disabled={isProcessing || newCount === 0} className="primary-btn">
-              Import {newCount} New Leads
-            </button>
-            <button onClick={() => handleImport(false)} disabled={isProcessing || duplicateCount === 0} className="secondary-btn" style={{ borderColor: '#dc2626', color: '#dc2626' }}>
-              Import All (Force Duplicates)
-            </button>
-            <button onClick={handleCancel} disabled={isProcessing} className="secondary-btn">
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
-      {lastSummary && !hasValidated && (
-        <div style={{ marginTop: '1rem', padding: '0.85rem 1rem', borderRadius: 'var(--radius-md)', background: '#ecfdf5', border: '1px solid #a7f3d0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <CheckCircle2 size={20} color="#059669" />
-          <div style={{ fontSize: '0.85rem' }}>
-            <div style={{ fontWeight: 700, color: '#047857' }}>Import Complete!</div>
-            <div style={{ color: '#065f46' }}>
-              <strong>{lastSummary.pastedCount}</strong> parsed &bull; <strong style={{ color: '#dc2626' }}>{lastSummary.duplicateCount}</strong> duplicates &bull; <strong style={{ color: '#047857' }}>{lastSummary.addedCount}</strong> leads added.
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <button 
+                  onClick={handleValidate} 
+                  disabled={!rawText.trim() || isProcessing} 
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '8px',
+                    padding: '0.75rem 1.5rem', background: 'var(--primary)', color: 'white',
+                    border: 'none', borderRadius: 'var(--radius-sm)', fontWeight: 600,
+                    cursor: !rawText.trim() || isProcessing ? 'not-allowed' : 'pointer',
+                    opacity: !rawText.trim() || isProcessing ? 0.7 : 1,
+                    transition: 'all 0.2s',
+                    boxShadow: '0 4px 6px -1px rgba(79, 70, 229, 0.2)'
+                  }}
+                >
+                  <Sparkles size={18} />
+                  {isProcessing ? 'Analyzing Data...' : 'Validate Import Data'}
+                </button>
+                <button 
+                  onClick={() => setRawText(sampleCsvSnippet)} 
+                  style={{
+                    padding: '0.75rem 1.5rem', background: 'transparent', color: 'var(--text-muted)',
+                    border: '1px solid var(--border-main)', borderRadius: 'var(--radius-sm)', fontWeight: 500,
+                    cursor: 'pointer', transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => { e.currentTarget.style.background = 'var(--bg-hover)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+                  onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+                >
+                  Load Sample Data
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border-main)' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)' }}>Validation Results</h3>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f8fafc', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
+                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#94a3b8' }}></span>
+                    <span style={{ fontWeight: 600, color: '#475569' }}>Total: {previewRows.length}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#ecfdf5', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
+                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></span>
+                    <span style={{ fontWeight: 600, color: '#047857' }}>New: {newCount}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#fef2f2', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
+                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444' }}></span>
+                    <span style={{ fontWeight: 600, color: '#b91c1c' }}>Duplicates: {duplicateCount}</span>
+                  </div>
+                  {invalidCount > 0 && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#fffbeb', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b' }}></span>
+                      <span style={{ fontWeight: 600, color: '#b45309' }}>Invalid: {invalidCount}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <div style={{ 
+                maxHeight: '350px', 
+                overflowY: 'auto', 
+                border: '1px solid var(--border-main)', 
+                borderRadius: 'var(--radius-md)', 
+                background: 'white',
+                boxShadow: 'var(--shadow-sm)' 
+              }}>
+                <table style={{ width: '100%', fontSize: '0.9rem', borderCollapse: 'collapse' }}>
+                  <thead style={{ position: 'sticky', top: 0, background: '#f8fafc', zIndex: 10, boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)' }}>
+                    <tr>
+                      <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: 'var(--text-muted)', borderBottom: '1px solid var(--border-main)' }}>Status</th>
+                      <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: 'var(--text-muted)', borderBottom: '1px solid var(--border-main)' }}>Business</th>
+                      <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: 'var(--text-muted)', borderBottom: '1px solid var(--border-main)' }}>Phone</th>
+                      <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: 'var(--text-muted)', borderBottom: '1px solid var(--border-main)' }}>Category</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {previewRows.map((r, idx) => (
+                      <tr key={idx} style={{ borderBottom: '1px solid var(--border-main)', background: idx % 2 === 0 ? 'transparent' : '#fcfcfd' }}>
+                        <td style={{ padding: '12px 16px' }}>
+                          <span style={{ 
+                            padding: '4px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px',
+                            background: r.status === 'New' ? '#ecfdf5' : r.status === 'Duplicate' ? '#fef2f2' : '#fffbeb',
+                            color: r.status === 'New' ? '#059669' : r.status === 'Duplicate' ? '#dc2626' : '#d97706'
+                          }}>
+                            {r.status === 'Duplicate' && <AlertTriangle size={12} />}
+                            {r.status}
+                          </span>
+                        </td>
+                        <td style={{ padding: '12px 16px', fontWeight: 500, color: 'var(--text-main)' }}>{r.businessName || '-'}</td>
+                        <td style={{ padding: '12px 16px', color: 'var(--text-muted)', fontFamily: 'monospace' }}>{r.phone || '-'}</td>
+                        <td style={{ padding: '12px 16px', color: 'var(--text-muted)' }}>{r.category || '-'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', paddingTop: '1rem' }}>
+                <button 
+                  onClick={() => handleImport(true)} 
+                  disabled={isProcessing || newCount === 0} 
+                  style={{
+                    padding: '0.75rem 1.5rem', background: 'var(--primary)', color: 'white',
+                    border: 'none', borderRadius: 'var(--radius-sm)', fontWeight: 600, cursor: 'pointer',
+                    boxShadow: '0 4px 6px -1px rgba(79, 70, 229, 0.2)', opacity: isProcessing || newCount === 0 ? 0.5 : 1
+                  }}
+                >
+                  Import {newCount} New Leads
+                </button>
+                <button 
+                  onClick={() => handleImport(false)} 
+                  disabled={isProcessing || duplicateCount === 0} 
+                  style={{
+                    padding: '0.75rem 1.5rem', background: 'transparent', color: '#ef4444',
+                    border: '1px solid #fca5a5', borderRadius: 'var(--radius-sm)', fontWeight: 500, cursor: 'pointer',
+                    opacity: isProcessing || duplicateCount === 0 ? 0.5 : 1
+                  }}
+                >
+                  Import All (Force Duplicates)
+                </button>
+                <div style={{ flex: 1 }}></div>
+                <button 
+                  onClick={handleCancel} 
+                  disabled={isProcessing} 
+                  style={{
+                    padding: '0.75rem 1.5rem', background: '#f1f5f9', color: 'var(--text-main)',
+                    border: 'none', borderRadius: 'var(--radius-sm)', fontWeight: 500, cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          {lastSummary && !hasValidated && (
+            <div style={{ 
+              marginTop: '2rem', padding: '1.25rem 1.5rem', borderRadius: 'var(--radius-md)', 
+              background: 'linear-gradient(to right, #ecfdf5, #d1fae5)', border: '1px solid #a7f3d0', 
+              display: 'flex', alignItems: 'flex-start', gap: '1rem', boxShadow: '0 4px 6px -1px rgba(16, 185, 129, 0.1)'
+            }}>
+              <CheckCircle2 size={24} color="#059669" style={{ marginTop: '2px' }} />
+              <div>
+                <h4 style={{ fontWeight: 700, color: '#047857', fontSize: '1.1rem', margin: '0 0 4px 0' }}>Import Successful!</h4>
+                <p style={{ color: '#065f46', margin: 0, fontSize: '0.95rem' }}>
+                  Successfully processed <strong>{lastSummary.pastedCount}</strong> leads. 
+                  Added <strong style={{ color: '#047857' }}>{lastSummary.addedCount}</strong> new leads 
+                  and skipped <strong style={{ color: '#dc2626' }}>{lastSummary.duplicateCount}</strong> duplicates.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
