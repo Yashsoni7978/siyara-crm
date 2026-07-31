@@ -63,6 +63,10 @@ model Lead {
   organization   Organization @relation(fields: [organizationId], references: [id])
   assignedTo     User?        @relation("AssignedLeads", fields: [assignedToId], references: [id])
   activities     Activity[]
+
+  @@index([organizationId, assignedToId])
+  @@index([organizationId, status, priority])
+  @@index([organizationId, cityArea, category])
 }
 
 model Activity {
@@ -77,4 +81,6 @@ model Activity {
   
   lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   user        User?    @relation(fields: [userId], references: [id])
+
+  @@index([leadId, timestamp])
 }

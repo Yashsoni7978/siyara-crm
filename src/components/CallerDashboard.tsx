@@ -165,18 +165,82 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName }) 
     }
   };
 
-  // Keyboard Shortcuts (Phase H basics: Enter, Esc, Arrows are in LeadQueue)
+  // Keyboard Shortcuts
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      // Escape to clear selection
+      // Don't trigger shortcuts if user is typing in an input/textarea
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        document.activeElement?.tagName === 'SELECT'
+      ) {
+        // Exception: Ctrl+Enter to save while focused in an input
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          const saveBtn = document.querySelector('button.btn-primary') as HTMLButtonElement;
+          if (saveBtn && saveBtn.innerText.includes('Save')) {
+            saveBtn.click();
+          }
+        }
+        return;
+      }
+
       if (e.key === 'Escape') {
         setActiveLeadId(null);
         setFocusedIndex(-1);
+        return;
+      }
+
+      if (!activeLeadId) return; // Shortcuts below require an active lead
+
+      switch (e.key.toLowerCase()) {
+        case 'n':
+          e.preventDefault();
+          setActiveTab('timeline');
+          // small timeout to let the tab render before focusing the textarea
+          setTimeout(() => {
+            const noteInput = document.querySelector('.cw-note-input') as HTMLTextAreaElement;
+            noteInput?.focus();
+          }, 50);
+          break;
+        case 'f':
+          e.preventDefault();
+          setActiveTab('overview');
+          setTimeout(() => {
+            const dateInput = document.querySelector('input[type="date"]') as HTMLInputElement;
+            dateInput?.focus();
+            dateInput?.showPicker?.(); // Optional: open date picker native UI if supported
+          }, 50);
+          break;
+        case 't':
+          e.preventDefault();
+          setActiveTab('tasks');
+          break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+          e.preventDefault();
+          const statuses = Object.keys(STATUS_CONFIG) as CallStatus[];
+          const index = parseInt(e.key) - 1;
+          if (statuses[index]) {
+            // Trigger status change via the same logic handleStatusChange would use
+            const statusSelect = document.querySelector('.cw-action-status-select') as HTMLSelectElement;
+            if (statusSelect) {
+              statusSelect.value = statuses[index];
+              statusSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          }
+          break;
       }
     };
+    
     document.addEventListener('keydown', handleGlobalKeyDown);
     return () => document.removeEventListener('keydown', handleGlobalKeyDown);
-  }, []);
+  }, [activeLeadId]);
 
   const activeLead = useMemo(() => leads.find(l => l.id === activeLeadId) || null, [leads, activeLeadId]);
 
