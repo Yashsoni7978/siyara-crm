@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { UserRole, Lead, ImportSummary } from '../types/crm';
-import { getLeads, updateSingleLead } from '../lib/storage';
+import React, { useState } from 'react';
+import { UserRole } from '../types/crm';
 import { Sidebar } from '../components/layout/Sidebar';
 import { TopNavbar } from '../components/layout/TopNavbar';
 import { LoginScreen } from '../components/LoginScreen';
