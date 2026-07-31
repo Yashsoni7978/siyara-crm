@@ -10,6 +10,15 @@ interface MasterDetailLayoutProps {
 export const MasterDetailLayout: React.FC<MasterDetailLayoutProps> = ({ leads, onUpdateLead }) => {
   const [activeLeadId, setActiveLeadId] = useState<string | null>(leads.length > 0 ? leads[0].id : null);
   const [activeTab, setActiveTab] = useState<'CRM' | 'Google' | 'Notes'>('CRM');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  // Compute unique categories
+  const categories = ['All', ...Array.from(new Set(leads.map(l => l.category).filter(Boolean)))];
+  
+  // Filter leads based on selected category
+  const filteredLeads = selectedCategory === 'All' 
+    ? leads 
+    : leads.filter(l => l.category === selectedCategory);
 
   const activeLead = leads.find(l => l.id === activeLeadId) || null;
 
@@ -22,11 +31,37 @@ export const MasterDetailLayout: React.FC<MasterDetailLayoutProps> = ({ leads, o
     <div className="master-detail-layout">
       {/* LEFT: MASTER LIST */}
       <div className="master-list">
-        <div className="master-list-header">
-          <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Assigned Leads ({leads.length})</span>
+        <div className="master-list-header" style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-main)', backgroundColor: 'var(--bg-main)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>Active Workspace</h2>
+            <span className="badge" style={{ backgroundColor: '#DBEAFE', color: '#1D4ED8' }}>{filteredLeads.length} Leads</span>
+          </div>
+          
+          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '16px',
+                  fontSize: '12px',
+                  fontWeight: 500,
+                  border: '1px solid',
+                  whiteSpace: 'nowrap',
+                  cursor: 'pointer',
+                  backgroundColor: selectedCategory === cat ? 'var(--primary)' : 'transparent',
+                  color: selectedCategory === cat ? 'white' : 'var(--text-main)',
+                  borderColor: selectedCategory === cat ? 'var(--primary)' : 'var(--border-main)'
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="master-list-content">
-          {leads.map(lead => {
+          {filteredLeads.map(lead => {
             const isActive = activeLeadId === lead.id;
             const statusStyle = STATUS_CONFIG[lead.status] || STATUS_CONFIG['Not Called'];
             
@@ -45,6 +80,9 @@ export const MasterDetailLayout: React.FC<MasterDetailLayoutProps> = ({ leads, o
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
                   <span style={{ color: 'var(--text-muted)' }}>{lead.category}</span>
                   <span style={{ fontFamily: 'monospace', color: 'var(--text-main)' }}>{lead.phone}</span>
+                </div>
+                <div style={{ marginTop: '8px', fontSize: '11px', color: '#9CA3AF', fontStyle: 'italic' }}>
+                  Added: {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown'}
                 </div>
               </div>
             );
