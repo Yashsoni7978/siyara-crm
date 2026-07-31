@@ -28,8 +28,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ role, activeMenu, onNavigate, 
   ];
 
   const callerMenu = [
-    { id: 'dashboard', label: 'Assigned Leads', icon: <PhoneCall size={18} /> },
-    { id: 'analytics', label: 'My Performance', icon: <PieChart size={18} /> },
+    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
+    { id: 'leads', label: 'Lead Queue', icon: <PhoneCall size={18} /> },
+    { id: 'schedule', label: 'Scheduled Calls', icon: <PieChart size={18} /> }, // Assuming we want a calendar icon here ideally, but reusing what's imported
+    { id: 'activities', label: 'Activities', icon: <Users size={18} /> },
+    { id: 'reports', label: 'Reports', icon: <PieChart size={18} /> },
+    { id: 'automation', label: 'Automation', icon: <UploadCloud size={18} /> },
+    { id: 'settings', label: 'Settings', icon: <Settings size={18} /> },
   ];
 
   const menuItems = role === 'Admin' ? adminMenu : callerMenu;
