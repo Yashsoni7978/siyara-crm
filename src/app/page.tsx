@@ -29,6 +29,7 @@ export default function Home() {
           <AdminOverview
             onImportComplete={() => {}} // TODO: Hook up to import engine
             onResetData={() => {}}
+            activeMenu={activeMenu}
           />
         );
       case 'import':
