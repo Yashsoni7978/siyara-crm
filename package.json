@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npx next dev --webpack",
-    "build": "npx next build --webpack",
+    "build": "npx prisma db push --accept-data-loss && npx next build --webpack",
     "start": "npx next start",
     "lint": "npx eslint",
     "postinstall": "prisma generate"
