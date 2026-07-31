@@ -434,3 +434,13 @@ html, body {
 .cw-timeline-date { color: #9ca3af; margin-left: auto; }
 .cw-timeline-body { font-size: 13px; color: var(--text-main); line-height: 1.5; }
 .cw-timeline-note { white-space: pre-wrap; }
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

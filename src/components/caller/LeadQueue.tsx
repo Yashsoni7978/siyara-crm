@@ -89,9 +89,31 @@ export const LeadQueue: React.FC<LeadQueueProps> = ({
       {/* Lead List */}
       <div ref={listRef} className="lq-queue-list">
         {isLoading ? (
-          <div className="lq-queue-loading">Loading leads...</div>
+          <div className="lq-queue-loading" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[1, 2, 3, 4, 5].map(i => (
+              <div key={i} style={{ 
+                height: '64px', 
+                background: 'var(--bg-hover)', 
+                borderRadius: '8px', 
+                animation: 'pulse 1.5s infinite ease-in-out' 
+              }} />
+            ))}
+          </div>
         ) : leads.length === 0 ? (
-          <div className="lq-queue-empty">No leads match your filters.</div>
+          <div className="lq-queue-empty" style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            height: '200px', 
+            color: 'var(--text-muted)',
+            textAlign: 'center',
+            padding: '0 24px'
+          }}>
+            <div style={{ fontSize: '2rem', marginBottom: '12px' }}>📭</div>
+            <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '4px' }}>Queue is Empty</h3>
+            <p style={{ fontSize: '0.85rem' }}>You have no leads matching the current filters. Great job!</p>
+          </div>
         ) : (
           leads.map((lead, idx) => (
             <LeadQueueRow

@@ -145,7 +145,33 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
 
             {/* Data Table */}
             {isLoading ? (
-              <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>Loading leads...</div>
+              <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {/* Header skeleton */}
+                <div style={{ height: '32px', background: 'var(--bg-main)', borderRadius: '4px', marginBottom: '8px' }}></div>
+                {/* Row skeletons */}
+                {[1, 2, 3, 4, 5].map(i => (
+                  <div key={i} style={{ 
+                    height: '48px', 
+                    background: 'var(--bg-hover)', 
+                    borderRadius: '4px', 
+                    animation: 'pulse 1.5s infinite ease-in-out',
+                    opacity: 1 - (i * 0.1)
+                  }} />
+                ))}
+              </div>
+            ) : leads.length === 0 ? (
+              <div style={{ 
+                padding: '40px', 
+                textAlign: 'center', 
+                color: 'var(--text-muted)',
+                background: 'var(--bg-main)',
+                borderRadius: '8px',
+                marginTop: '16px'
+              }}>
+                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📭</div>
+                <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '4px' }}>No Leads Found</div>
+                <div style={{ fontSize: '13px' }}>Adjust your filters or import new leads to populate the database.</div>
+              </div>
             ) : (
               <DataTable leads={leads} />
             )}

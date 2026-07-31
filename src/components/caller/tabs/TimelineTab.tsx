@@ -94,9 +94,34 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({ leadId, onAddNote, onD
 
       <div className="cw-timeline-feed">
         {loading ? (
-          <div className="cw-timeline-loading">Loading timeline...</div>
+          <div className="cw-timeline-loading" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {[1, 2, 3].map(i => (
+              <div key={i} className="cw-timeline-item" style={{ opacity: 1 - (i * 0.2) }}>
+                <div className="cw-timeline-icon" style={{ background: 'var(--bg-hover)', border: 'none', animation: 'pulse 1.5s infinite ease-in-out' }}></div>
+                <div className="cw-timeline-content" style={{ animation: 'pulse 1.5s infinite ease-in-out' }}>
+                  <div style={{ height: '14px', width: '120px', background: 'var(--bg-hover)', borderRadius: '4px', marginBottom: '12px' }}></div>
+                  <div style={{ height: '12px', width: '80%', background: 'var(--bg-hover)', borderRadius: '4px' }}></div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : activities.length === 0 ? (
-          <div className="cw-timeline-empty">No activities recorded yet.</div>
+          <div className="cw-timeline-empty" style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            height: '150px', 
+            color: 'var(--text-muted)',
+            textAlign: 'center',
+            background: 'var(--bg-main)',
+            borderRadius: '8px',
+            border: '1px dashed var(--border-focus)'
+          }}>
+            <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>📝</div>
+            <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-main)' }}>No History Yet</h3>
+            <p style={{ fontSize: '0.8rem' }}>Leave a note or change a status to start the timeline.</p>
+          </div>
         ) : (
           activities.map(activity => (
             <div key={activity.id} className="cw-timeline-item">
