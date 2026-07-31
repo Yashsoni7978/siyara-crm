@@ -53,6 +53,7 @@ model Lead {
   status         String       @default("Not Called")
   priority       String       @default("None")
   followUpDate   DateTime?
+  listName       String?
   
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
