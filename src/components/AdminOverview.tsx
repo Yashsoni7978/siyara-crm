@@ -65,9 +65,8 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
       {/* KPIs */}
       <AnalyticsCards leads={leads} totalLeads={totalLeads} />
 
-      {/* Import Tool */}
       <div style={{ marginBottom: '24px' }}>
-        <ImportTool onImportComplete={onImportComplete} />
+        <ImportTool onImportComplete={onImportComplete} organizationId="siyara-enterprise-id-1" />
       </div>
 
       {/* Leads Table Section */}
