@@ -32,32 +32,37 @@ export const MasterDetailLayout: React.FC<MasterDetailLayoutProps> = ({ leads, o
       {/* LEFT: MASTER LIST */}
       <div className="master-list">
         <div className="master-list-header" style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-main)', backgroundColor: 'var(--bg-main)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <h2 style={{ fontSize: '18px', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>Active Workspace</h2>
-            <span className="badge" style={{ backgroundColor: '#DBEAFE', color: '#1D4ED8' }}>{filteredLeads.length} Leads</span>
+            <span className="badge" style={{ backgroundColor: '#DBEAFE', color: '#1D4ED8', fontSize: '13px', padding: '4px 10px' }}>{filteredLeads.length} Leads</span>
           </div>
           
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                style={{
-                  padding: '6px 12px',
-                  borderRadius: '16px',
-                  fontSize: '12px',
-                  fontWeight: 500,
-                  border: '1px solid',
-                  whiteSpace: 'nowrap',
-                  cursor: 'pointer',
-                  backgroundColor: selectedCategory === cat ? 'var(--primary)' : 'transparent',
-                  color: selectedCategory === cat ? 'white' : 'var(--text-main)',
-                  borderColor: selectedCategory === cat ? 'var(--primary)' : 'var(--border-main)'
-                }}
-              >
-                {cat}
-              </button>
-            ))}
+          <div style={{ backgroundColor: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-main)' }}>
+            <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+              Filter by Category
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: 'pointer',
+                    backgroundColor: selectedCategory === cat ? 'var(--primary)' : 'white',
+                    color: selectedCategory === cat ? 'white' : 'var(--text-main)',
+                    boxShadow: selectedCategory === cat ? '0 4px 6px -1px rgba(37, 99, 235, 0.2)' : '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
         <div className="master-list-content">
