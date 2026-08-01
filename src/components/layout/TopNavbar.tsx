@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Bell, ChevronDown, LogOut, User, Menu } from 'lucide-react';
-import { UserRole } from '../../types/crm';
+import { Lead, UserRole } from '../../types/crm';
 
 interface TopNavbarProps {
   role: UserRole;
@@ -12,15 +12,46 @@ interface TopNavbarProps {
 export const TopNavbar: React.FC<TopNavbarProps> = ({ role, activeMenu, onLogout, onMenuClick }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  // Search State
+  const searchRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Lead[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Format the active menu name nicely for breadcrumb
   const pageTitle = activeMenu.charAt(0).toUpperCase() + activeMenu.slice(1);
 
-  // Close dropdown on outside click
+  // Search logic
+  useEffect(() => {
+    const handler = setTimeout(async () => {
+      if (searchQuery.length > 2) {
+        setIsSearching(true);
+        try {
+          const res = await fetch(`/api/leads?search=${searchQuery}&limit=5`);
+          const json = await res.json();
+          if (json.data) setSearchResults(json.data);
+        } catch (e) {
+          console.error(e);
+        } finally {
+          setIsSearching(false);
+        }
+      } else {
+        setSearchResults([]);
+      }
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setIsProfileOpen(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setIsSearchOpen(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -42,15 +73,59 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ role, activeMenu, onLogout
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
         {/* Global Search */}
-        <div className="mobile-hidden" style={{ position: 'relative', width: '280px' }}>
+        <div className="mobile-hidden" style={{ position: 'relative', width: '280px' }} ref={searchRef}>
           <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
           <input 
             type="text" 
-            placeholder="Global search (coming soon)..." 
+            placeholder="Search leads, phone..." 
             className="input-field" 
             style={{ paddingLeft: '32px', height: '32px', backgroundColor: 'var(--bg-main)' }}
-            disabled
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setIsSearchOpen(true)}
           />
+          
+          {isSearchOpen && (searchQuery.length > 2 || searchResults.length > 0) && (
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              marginTop: '4px',
+              background: 'white',
+              border: '1px solid var(--border-main)',
+              borderRadius: '8px',
+              boxShadow: 'var(--shadow-lg)',
+              maxHeight: '300px',
+              overflowY: 'auto',
+              zIndex: 50
+            }}>
+              {isSearching ? (
+                <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--text-muted)' }}>Searching...</div>
+              ) : searchResults.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  {searchResults.map(lead => (
+                    <div 
+                      key={lead.id} 
+                      style={{ padding: '10px 12px', borderBottom: '1px solid var(--border-main)', cursor: 'pointer', transition: 'background 0.1s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      onClick={() => {
+                        setIsSearchOpen(false);
+                        setSearchQuery('');
+                        alert(`In a full app, this would route to lead: ${lead.businessName}`);
+                      }}
+                    >
+                      <div style={{ fontWeight: 600, fontSize: '12px', color: 'var(--text-main)' }}>{lead.businessName}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{lead.phone} • {lead.status}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--text-muted)' }}>No leads found.</div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Quick Actions & Profile */}

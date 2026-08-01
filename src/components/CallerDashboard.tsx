@@ -6,6 +6,9 @@ import { LeadQueueToolbar, SortField } from './caller/LeadQueueToolbar';
 import { SavedViews, PRESET_VIEWS, SavedView } from './caller/SavedViews';
 import { LeadQueue } from './caller/LeadQueue';
 import { CallerWorkspace, WorkspaceTab } from './caller/CallerWorkspace';
+import { CallerActivities } from './caller/CallerActivities';
+import { CallerReports } from './caller/CallerReports';
+import { CallerSettings } from './caller/CallerSettings';
 import { getUserIdByName } from '../app/actions';
 import { CATEGORIES, STATUS_CONFIG } from '../lib/constants';
 
@@ -282,6 +285,19 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
         </p>
       </div>
     );
+  }
+
+  // Handle Full-Page Modules (Activities, Reports, Settings)
+  if (activeMenu === 'activities') {
+    return <CallerActivities userId={userId} />;
+  }
+  
+  if (activeMenu === 'reports') {
+    return <CallerReports />;
+  }
+  
+  if (activeMenu === 'settings') {
+    return <CallerSettings callerName={callerName} />;
   }
 
   return (

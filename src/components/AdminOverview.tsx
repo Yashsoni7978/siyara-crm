@@ -5,6 +5,9 @@ import { Lead, ImportSummary } from '../types/crm';
 import { ImportTool } from './ImportTool';
 import { DataTable } from './data-display/DataTable';
 import { AnalyticsCards } from './data-display/AnalyticsCards';
+import { AdminCallers } from './AdminCallers';
+import { AdminAnalytics } from './AdminAnalytics';
+import { AdminSettings } from './AdminSettings';
 import { STATUS_CONFIG } from '../lib/constants';
 
 interface AdminOverviewProps {
@@ -177,6 +180,15 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
             )}
           </div>
         );
+
+      case 'callers':
+        return <AdminCallers />;
+
+      case 'analytics':
+        return <AdminAnalytics leads={leads} />;
+
+      case 'settings':
+        return <AdminSettings />;
 
       default:
         return (
