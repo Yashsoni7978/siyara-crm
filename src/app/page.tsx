@@ -23,32 +23,13 @@ export default function Home() {
   }
 
   const renderAdminContent = () => {
-    switch (activeMenu) {
-      case 'dashboard':
-        return (
-          <AdminOverview
-            onImportComplete={() => {}} // TODO: Hook up to import engine
-            onResetData={() => {}}
-            activeMenu={activeMenu}
-          />
-        );
-      case 'import':
-        return (
-          <ImportTool
-            organizationId="default-org"
-            onImportComplete={() => {}}
-          />
-        );
-      default:
-        return (
-          <div className="placeholder-page" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '1rem' }}>
-              {activeMenu.charAt(0).toUpperCase() + activeMenu.slice(1)}
-            </h2>
-            <p>This module is under construction.</p>
-          </div>
-        );
-    }
+    return (
+      <AdminOverview
+        onImportComplete={() => {}} // TODO: Hook up to import engine
+        onResetData={() => {}}
+        activeMenu={activeMenu}
+      />
+    );
   };
 
   return (
