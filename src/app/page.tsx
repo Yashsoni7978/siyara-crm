@@ -26,7 +26,9 @@ export default function Home() {
   const renderAdminContent = () => {
     return (
       <AdminOverview
-        onImportComplete={() => {}} // TODO: Hook up to import engine
+        onImportComplete={() => {
+          setActiveMenu('leads');
+        }}
         onResetData={() => {}}
         activeMenu={activeMenu}
       />
