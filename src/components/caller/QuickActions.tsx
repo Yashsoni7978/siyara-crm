@@ -16,12 +16,12 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
   onAddNote,
   onScheduleFollowUp,
 }) => {
-  const actions: Array<{ icon: React.ReactNode; label: string; href?: string; onClick?: () => void; shortcut?: string }> = [
-    { icon: <Phone size={14} />, label: 'Call', href: `tel:${lead.phone}` },
-    { icon: <MessageCircle size={14} />, label: 'WhatsApp', href: `https://wa.me/${lead.phone?.replace(/[^0-9]/g, '')}` },
-    { icon: <Mail size={14} />, label: 'Email', href: lead.email ? `mailto:${lead.email}` : undefined },
-    { icon: <Calendar size={14} />, label: 'Follow-up', onClick: onScheduleFollowUp },
-    { icon: <StickyNote size={14} />, label: 'Note', onClick: onAddNote, shortcut: 'N' },
+  const actions: Array<{ icon: React.ReactNode; label: string; href?: string; onClick?: () => void; shortcut?: string; className: string }> = [
+    { icon: <Phone size={14} />, label: 'Call', href: `tel:${lead.phone}`, className: 'cw-action-btn-call' },
+    { icon: <MessageCircle size={14} />, label: 'WhatsApp', href: `https://wa.me/${lead.phone?.replace(/[^0-9]/g, '')}`, className: 'cw-action-btn-whatsapp' },
+    { icon: <Mail size={14} />, label: 'Email', href: lead.email ? `mailto:${lead.email}` : undefined, className: 'cw-action-btn-email' },
+    { icon: <Calendar size={14} />, label: 'Follow-up', onClick: onScheduleFollowUp, className: 'cw-action-btn-followup' },
+    { icon: <StickyNote size={14} />, label: 'Note', onClick: onAddNote, shortcut: 'N', className: 'cw-action-btn-note' },
   ];
 
   return (
@@ -35,7 +35,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
                 href={action.href}
                 target="_blank"
                 rel="noreferrer"
-                className="cw-action-btn"
+                className={`cw-action-btn ${action.className}`}
                 title={action.shortcut ? `${action.label} (${action.shortcut})` : action.label}
               >
                 {action.icon}
@@ -47,7 +47,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
             <button
               key={action.label}
               type="button"
-              className="cw-action-btn"
+              className={`cw-action-btn ${action.className}`}
               onClick={action.onClick}
               title={action.shortcut ? `${action.label} (${action.shortcut})` : action.label}
             >

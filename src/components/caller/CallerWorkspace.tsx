@@ -90,15 +90,17 @@ export const CallerWorkspace: React.FC<CallerWorkspaceProps> = ({
       />
 
       <div className="cw-tabs-nav">
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            className={`cw-tab-btn ${activeTab === tab.id ? 'cw-tab-btn-active' : ''}`}
-            onClick={() => onTabChange(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
+        <div className="cw-tabs-container">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              className={`cw-tab-btn ${activeTab === tab.id ? 'cw-tab-btn-active' : ''}`}
+              onClick={() => onTabChange(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="cw-tab-body">

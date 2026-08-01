@@ -42,9 +42,9 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
     <div className="cw-tab-content cw-overview-tab">
       <div className="cw-grid-2">
         <div className="cw-form-group">
-          <label className="label">Priority</label>
+          <label className="cw-form-label">Priority</label>
           <select 
-            className="input-field"
+            className="cw-form-select"
             value={localPriority}
             onChange={handlePriorityChange}
           >
@@ -55,10 +55,10 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
           </select>
         </div>
         <div className="cw-form-group">
-          <label className="label">Follow-up Date</label>
+          <label className="cw-form-label">Follow-up Date</label>
           <input 
             type="date" 
-            className="input-field" 
+            className="cw-form-input" 
             value={localFollowUp}
             onChange={handleFollowUpChange}
           />
