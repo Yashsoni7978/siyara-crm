@@ -33,7 +33,7 @@ export const STATUS_CONFIG: Record<
   'Busy': {
     label: 'Busy',
     color: '#d97706',
-    bg: '#fffbeb',
+    bg: 'var(--warning)',
     border: '#fde68a',
   },
   'Wrong Number': {
@@ -45,7 +45,7 @@ export const STATUS_CONFIG: Record<
   'No Answer': {
     label: 'No Answer',
     color: '#64748b',
-    bg: '#f8fafc',
+    bg: 'var(--bg-main)',
     border: '#e2e8f0',
   },
   'Converted': {

@@ -49,7 +49,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                 setPassword('');
                 setErrorMsg('');
               }}
-              style={{ backgroundColor: 'white', cursor: 'pointer' }}
+              style={{ backgroundColor: 'var(--bg-card)', cursor: 'pointer' }}
             >
               <option value="Admin">Admin / Manager</option>
               <option value="User 1">Caller Desk 1</option>

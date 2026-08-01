@@ -22,7 +22,7 @@ export const AdminCallers: React.FC = () => {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '24px' }}>
         <div className="card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#eff6ff', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Users size={24} />
           </div>
           <div>
@@ -31,7 +31,7 @@ export const AdminCallers: React.FC = () => {
           </div>
         </div>
         <div className="card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#ecfdf5', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--success)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <PhoneCall size={24} />
           </div>
           <div>
@@ -40,7 +40,7 @@ export const AdminCallers: React.FC = () => {
           </div>
         </div>
         <div className="card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#fffbeb', color: 'var(--warning)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--warning)', color: 'var(--warning)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <TrendingUp size={24} />
           </div>
           <div>

@@ -176,11 +176,11 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border-main)' }}>
                 <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)' }}>Validation Results</h3>
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f8fafc', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-main)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#94a3b8' }}></span>
                     <span style={{ fontWeight: 600, color: '#475569' }}>Total: {previewRows.length}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#ecfdf5', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--success)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></span>
                     <span style={{ fontWeight: 600, color: '#047857' }}>New: {newCount}</span>
                   </div>
@@ -189,7 +189,7 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
                     <span style={{ fontWeight: 600, color: '#b91c1c' }}>Duplicates: {duplicateCount}</span>
                   </div>
                   {invalidCount > 0 && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#fffbeb', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--warning)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
                       <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b' }}></span>
                       <span style={{ fontWeight: 600, color: '#b45309' }}>Invalid: {invalidCount}</span>
                     </div>
@@ -206,7 +206,7 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
                 boxShadow: 'var(--shadow-sm)' 
               }}>
                 <table style={{ width: '100%', fontSize: '0.9rem', borderCollapse: 'collapse' }}>
-                  <thead style={{ position: 'sticky', top: 0, background: '#f8fafc', zIndex: 10, boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)' }}>
+                  <thead style={{ position: 'sticky', top: 0, background: 'var(--bg-main)', zIndex: 10, boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)' }}>
                     <tr>
                       <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: 'var(--text-muted)', borderBottom: '1px solid var(--border-main)' }}>Status</th>
                       <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: 'var(--text-muted)', borderBottom: '1px solid var(--border-main)' }}>Business</th>
