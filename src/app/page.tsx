@@ -44,7 +44,7 @@ export default function Home() {
 
       {/* Main Content Area */}
       <div className="main-content">
-        <TopNavbar role={loggedInRole} activeMenu={activeMenu} />
+        <TopNavbar role={loggedInRole} activeMenu={activeMenu} onLogout={handleLogout} />
         
         <div className="workspace">
           {loggedInRole === 'Admin' ? renderAdminContent() : <CallerDashboard callerName={loggedInRole} activeMenu={activeMenu} />}
