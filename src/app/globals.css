@@ -444,3 +444,85 @@ html, body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+========================================= */
+
+/* Mobile Utilities */
+.mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-hidden {
+    display: none !important;
+  }
+  .mobile-only {
+    display: flex !important;
+  }
+  .mobile-only-block {
+    display: block !important;
+  }
+  
+  /* Sidebar Drawer */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 90;
+    animation: fadeIn 0.3s;
+  }
+
+  /* Master Detail Stack */
+  .caller-dashboard-container {
+    flex-direction: column !important;
+  }
+  .caller-dashboard-queue, .caller-dashboard-workspace {
+    width: 100% !important;
+    border-right: none !important;
+  }
+  
+  .cw-tabs-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0 16px;
+    gap: 16px;
+  }
+  .cw-tabs-nav::-webkit-scrollbar {
+    height: 0;
+  }
+  
+  .cw-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .cw-header {
+    padding: 16px;
+  }
+  
+  .lq-toolbar-filters {
+    grid-template-columns: 1fr;
+  }
+}

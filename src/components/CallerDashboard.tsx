@@ -186,6 +186,8 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
     setIsWorkspaceDirty(false); // Reset dirty state on change
   }, [activeLeadId, isWorkspaceDirty]);
 
+  const [showMobileList, setShowMobileList] = useState(true);
+
   // Keyboard Shortcuts
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -209,6 +211,7 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
       if (e.key === 'Escape') {
         handleSelectLead(null);
         setFocusedIndex(-1);
+        setShowMobileList(true);
         return;
       }
 
@@ -282,10 +285,10 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
   }
 
   return (
-    <div style={{ display: 'flex', height: 'calc(100vh - 56px)', overflow: 'hidden' }}>
+    <div className="caller-dashboard-container" style={{ display: 'flex', height: 'calc(100vh - 56px)', overflow: 'hidden' }}>
       
       {/* Middle Column: Lead Queue */}
-      <div style={{ width: '350px', borderRight: '1px solid var(--border-main)', display: 'flex', flexDirection: 'column', background: 'var(--bg-main)' }}>
+      <div className={`caller-dashboard-queue ${!showMobileList ? 'mobile-hidden' : ''}`} style={{ width: '350px', borderRight: '1px solid var(--border-main)', display: 'flex', flexDirection: 'column', background: 'var(--bg-main)' }}>
         
         <div style={{ padding: '16px 16px 0', background: 'var(--bg-main)' }}>
           <SavedViews activeView={activeView} onViewChange={handleViewChange} />
@@ -316,7 +319,10 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
           leads={leads}
           activeLeadId={activeLeadId}
           focusedIndex={focusedIndex}
-          onSelectLead={handleSelectLead}
+          onSelectLead={(id) => {
+            handleSelectLead(id);
+            if (id) setShowMobileList(false);
+          }}
           onFocusChange={setFocusedIndex}
           isLoading={isLoading}
           total={totalLeads}
@@ -327,7 +333,25 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
       </div>
 
       {/* Right Column: Caller Workspace */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'white' }}>
+      <div className={`caller-dashboard-workspace ${showMobileList ? 'mobile-hidden' : ''}`} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'white' }}>
+        {/* Mobile Back Button */}
+        <button 
+          className="mobile-only" 
+          onClick={() => setShowMobileList(true)}
+          style={{ 
+            padding: '12px 16px', 
+            background: 'var(--bg-main)', 
+            border: 'none', 
+            borderBottom: '1px solid var(--border-main)',
+            color: 'var(--primary)',
+            fontWeight: 600,
+            cursor: 'pointer',
+            textAlign: 'left'
+          }}
+        >
+          &larr; Back to Leads Queue
+        </button>
+        
         <CallerWorkspace 
           lead={activeLead}
           activeTab={activeTab}

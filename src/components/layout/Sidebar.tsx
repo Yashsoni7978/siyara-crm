@@ -7,7 +7,8 @@ import {
   PhoneCall, 
   PieChart, 
   Settings, 
-  LogOut 
+  LogOut,
+  X
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -15,9 +16,11 @@ interface SidebarProps {
   activeMenu: string;
   onNavigate: (menu: string) => void;
   onLogout: () => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ role, activeMenu, onNavigate, onLogout }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ role, activeMenu, onNavigate, onLogout, isOpen = false, onClose }) => {
   const adminMenu = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
     { id: 'leads', label: 'Lead Management', icon: <Users size={18} /> },
@@ -39,20 +42,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ role, activeMenu, onNavigate, 
   const menuItems = role === 'Admin' ? adminMenu : callerMenu;
 
   return (
-    <div className="sidebar" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '24px 20px', borderBottom: '1px solid var(--border-main)' }}>
+    <div className={`sidebar ${isOpen ? 'open' : ''}`} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: '24px 20px', borderBottom: '1px solid var(--border-main)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--primary)', letterSpacing: '-0.5px' }}>
           SIYARA CRM
         </h2>
+        {/* Mobile Close Button */}
+        {onClose && (
+          <button className="mobile-only" onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
+            <X size={20} />
+          </button>
+        )}
       </div>
       
-      <div style={{ flex: 1, padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+      <div style={{ flex: 1, padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto' }}>
         {menuItems.map(item => {
           const isActive = activeMenu === item.id;
           return (
             <button
               key={item.id}
-              onClick={() => onNavigate(item.id)}
+              onClick={() => {
+                onNavigate(item.id);
+                if (onClose) onClose();
+              }}
               style={{
                 display: 'flex',
                 alignItems: 'center',

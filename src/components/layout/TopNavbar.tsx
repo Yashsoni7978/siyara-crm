@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, Bell, ChevronDown, LogOut, User } from 'lucide-react';
+import { Search, Bell, ChevronDown, LogOut, User, Menu } from 'lucide-react';
 import { UserRole } from '../../types/crm';
 
 interface TopNavbarProps {
   role: UserRole;
   activeMenu: string;
   onLogout: () => void;
+  onMenuClick?: () => void;
 }
 
-export const TopNavbar: React.FC<TopNavbarProps> = ({ role, activeMenu, onLogout }) => {
+export const TopNavbar: React.FC<TopNavbarProps> = ({ role, activeMenu, onLogout, onMenuClick }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,14 +30,19 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ role, activeMenu, onLogout
   return (
     <div className="topbar" style={{ position: 'relative', zIndex: 40 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ fontSize: 'var(--font-sm)', color: 'var(--text-muted)' }}>SIYARA CRM</span>
-        <span style={{ fontSize: 'var(--font-sm)', color: 'var(--border-focus)' }}>/</span>
+        {onMenuClick && (
+          <button className="mobile-only-block" onClick={onMenuClick} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-main)', marginRight: '8px' }}>
+            <Menu size={20} />
+          </button>
+        )}
+        <span className="mobile-hidden" style={{ fontSize: 'var(--font-sm)', color: 'var(--text-muted)' }}>SIYARA CRM</span>
+        <span className="mobile-hidden" style={{ fontSize: 'var(--font-sm)', color: 'var(--border-focus)' }}>/</span>
         <span style={{ fontSize: 'var(--font-sm)', fontWeight: 600, color: 'var(--text-main)' }}>{pageTitle}</span>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
         {/* Global Search */}
-        <div style={{ position: 'relative', width: '280px' }}>
+        <div className="mobile-hidden" style={{ position: 'relative', width: '280px' }}>
           <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
           <input 
             type="text" 
