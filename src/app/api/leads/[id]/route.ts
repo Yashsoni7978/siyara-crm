@@ -3,11 +3,11 @@ import { prisma } from '../../../../lib/prisma';
 
 export async function PATCH(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  context: any
 ) {
   try {
-    const { id } = await params;
-    const leadId = id;
+    const params = await context.params;
+    const leadId = params?.id || context.params?.id;
     if (!leadId) {
       return NextResponse.json({ error: 'Lead ID is required' }, { status: 400 });
     }
