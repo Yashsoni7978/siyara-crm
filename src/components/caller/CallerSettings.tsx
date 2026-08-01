@@ -38,23 +38,8 @@ export const CallerSettings: React.FC<CallerSettingsProps> = ({ callerName }) =>
           </div>
         </div>
 
-        <div className="card" style={{ overflow: 'hidden' }}>
-          <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-main)', background: 'var(--bg-main)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Monitor size={18} color="var(--primary)" />
-            <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>Interface Settings</h3>
-          </div>
-          <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div className="cw-form-group">
-              <label className="cw-form-label">Theme</label>
-              <select className="cw-form-select">
-                <option>System Default</option>
-                <option>Light Mode</option>
-                <option>Dark Mode</option>
-              </select>
-            </div>
-          </div>
-        </div>
         
+
         <div className="card" style={{ overflow: 'hidden' }}>
           <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-main)', background: 'var(--bg-main)', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Bell size={18} color="var(--primary)" />

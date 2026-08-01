@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, Bell, ChevronDown, LogOut, User, Menu } from 'lucide-react';
+import { Search, Bell, ChevronDown, LogOut, User, Menu, Lightbulb, Moon } from 'lucide-react';
 import { Lead, UserRole } from '../../types/crm';
 
 interface TopNavbarProps {
@@ -19,6 +19,22 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ role, activeMenu, onLogout
   const [searchResults, setSearchResults] = useState<Lead[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // Theme State
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    // Load theme from localStorage or document attribute on mount
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    setTheme(currentTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('siyara-theme', newTheme);
+  };
 
   // Format the active menu name nicely for breadcrumb
   const pageTitle = activeMenu.charAt(0).toUpperCase() + activeMenu.slice(1);
@@ -130,6 +146,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ role, activeMenu, onLogout
 
         {/* Quick Actions & Profile */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <button 
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
+            onClick={toggleTheme}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? <Lightbulb size={18} color="var(--warning)" /> : <Moon size={18} />}
+          </button>
+
           <button 
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', position: 'relative' }}
             onClick={() => alert('You have no new notifications.')}
