@@ -501,6 +501,8 @@ html, body {
   }
   .caller-dashboard-queue, .caller-dashboard-workspace {
     width: 100% !important;
+    height: 100% !important;
+    flex: 1 !important;
     border-right: none !important;
   }
   
