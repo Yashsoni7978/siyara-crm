@@ -20,7 +20,7 @@ export const STATUS_CONFIG: Record<
 > = {
   'Not Called': {
     label: 'Not Called',
-    color: '#475569',
+    color: 'var(--text-muted)',
     bg: '#f1f5f9',
     border: '#cbd5e1',
   },

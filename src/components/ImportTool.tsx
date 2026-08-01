@@ -178,7 +178,7 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
                 <div style={{ display: 'flex', gap: '1rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-main)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#94a3b8' }}></span>
-                    <span style={{ fontWeight: 600, color: '#475569' }}>Total: {previewRows.length}</span>
+                    <span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>Total: {previewRows.length}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--success)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></span>
