@@ -1,4 +1,5 @@
 import React from 'react';
+import { Phone, Globe, Star, MapPin } from 'lucide-react';
 import { Lead } from '../../types/crm';
 import { STATUS_CONFIG } from '../../lib/constants';
 
@@ -49,9 +50,14 @@ export const LeadQueueRow: React.FC<LeadQueueRowProps> = React.memo(({
           </span>
         )}
       </div>
-      <div className="lq-row-bottom">
-        <span className="lq-row-phone">{lead.phone}</span>
-        <span className="lq-row-meta">
+      <div className="lq-row-bottom" style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '6px', color: 'var(--border-focus)' }}>
+          {lead.phone && <Phone size={12} title="Phone Available" />}
+          {lead.website && <Globe size={12} title="Website Available" />}
+          {lead.mapsLink && <MapPin size={12} title="Location Available" />}
+          {lead.reviewCount && lead.reviewCount > 50 && <Star size={12} fill="var(--warning)" color="var(--warning)" title="Highly Reviewed" />}
+        </div>
+        <span className="lq-row-meta" style={{ marginLeft: 'auto' }}>
           {lead.updatedAt
             ? new Date(lead.updatedAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })
             : ''}
