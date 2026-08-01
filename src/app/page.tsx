@@ -66,7 +66,7 @@ export default function Home() {
         <TopNavbar role={loggedInRole} activeMenu={activeMenu} />
         
         <div className="workspace">
-          {loggedInRole === 'Admin' ? renderAdminContent() : <CallerDashboard callerName={loggedInRole} />}
+          {loggedInRole === 'Admin' ? renderAdminContent() : <CallerDashboard callerName={loggedInRole} activeMenu={activeMenu} />}
         </div>
       </div>
     </div>

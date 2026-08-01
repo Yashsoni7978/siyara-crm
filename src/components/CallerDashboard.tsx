@@ -269,6 +269,18 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
     return <div style={{ padding: '40px', color: 'var(--text-muted)' }}>Loading Caller Workspace...</div>;
   }
 
+  if (!userId) {
+    return (
+      <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-main)', marginTop: '40px' }}>
+        <h2 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>User Account Not Found</h2>
+        <p style={{ color: 'var(--text-muted)' }}>
+          The caller account "<strong>{callerName}</strong>" does not exist in the database.
+          Please run the database seed script or contact your administrator.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div style={{ display: 'flex', height: 'calc(100vh - 56px)', overflow: 'hidden' }}>
       
