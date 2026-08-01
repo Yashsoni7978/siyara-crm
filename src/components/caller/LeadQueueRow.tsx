@@ -37,7 +37,7 @@ export const LeadQueueRow: React.FC<LeadQueueRowProps> = React.memo(({
     const colors = [
       'linear-gradient(135deg, #3b82f6, #8b5cf6)', // Blue-Purple
       'linear-gradient(135deg, #10b981, #3b82f6)', // Green-Blue
-      'linear-gradient(135deg, #f59e0b, #ef4444)', // Orange-Red
+      'linear-gradient(135deg, #f59e0b, var(--danger))', // Orange-Red
       'linear-gradient(135deg, #ec4899, #8b5cf6)', // Pink-Purple
       'linear-gradient(135deg, #06b6d4, #3b82f6)', // Cyan-Blue
       'linear-gradient(135deg, #84cc16, #10b981)', // Lime-Green

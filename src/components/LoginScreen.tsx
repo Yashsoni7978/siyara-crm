@@ -80,7 +80,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
           </div>
 
           {errorMsg && (
-            <div style={{ padding: '8px 12px', backgroundColor: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '4px', color: '#DC2626', fontSize: '13px', fontWeight: 500 }}>
+            <div style={{ padding: '8px 12px', backgroundColor: 'var(--danger)', border: '1px solid #FECACA', borderRadius: '4px', color: '#DC2626', fontSize: '13px', fontWeight: 500 }}>
               {errorMsg}
             </div>
           )}

@@ -23,7 +23,7 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ lead }) => {
     const colors = [
       'linear-gradient(135deg, #3b82f6, #8b5cf6)',
       'linear-gradient(135deg, #10b981, #3b82f6)',
-      'linear-gradient(135deg, #f59e0b, #ef4444)',
+      'linear-gradient(135deg, #f59e0b, var(--danger))',
       'linear-gradient(135deg, #ec4899, #8b5cf6)',
       'linear-gradient(135deg, #06b6d4, #3b82f6)',
       'linear-gradient(135deg, #84cc16, #10b981)',

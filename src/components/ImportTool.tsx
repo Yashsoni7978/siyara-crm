@@ -95,7 +95,7 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
       </div>
 
       <div style={{ 
-        background: 'rgba(255, 255, 255, 0.7)', 
+        background: 'var(--bg-main)', 
         backdropFilter: 'blur(12px)',
         border: '1px solid rgba(255, 255, 255, 0.5)', 
         borderRadius: 'var(--radius-lg)', 
@@ -116,7 +116,7 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
                     padding: '1.25rem',
                     borderRadius: 'var(--radius-md)',
                     border: '1px solid var(--border-main)',
-                    background: 'rgba(255, 255, 255, 0.9)',
+                    background: 'var(--bg-card)',
                     fontSize: '0.95rem',
                     fontFamily: 'monospace',
                     resize: 'vertical',
@@ -184,8 +184,8 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></span>
                     <span style={{ fontWeight: 600, color: '#047857' }}>New: {newCount}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#fef2f2', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
-                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444' }}></span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--danger)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>
+                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--danger)' }}></span>
                     <span style={{ fontWeight: 600, color: '#b91c1c' }}>Duplicates: {duplicateCount}</span>
                   </div>
                   {invalidCount > 0 && (
@@ -216,11 +216,11 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
                   </thead>
                   <tbody>
                     {previewRows.map((r, idx) => (
-                      <tr key={idx} style={{ borderBottom: '1px solid var(--border-main)', background: idx % 2 === 0 ? 'transparent' : '#fcfcfd' }}>
+                      <tr key={idx} style={{ borderBottom: '1px solid var(--border-main)', background: idx % 2 === 0 ? 'transparent' : 'var(--bg-hover)' }}>
                         <td style={{ padding: '12px 16px' }}>
                           <span style={{ 
                             padding: '4px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px',
-                            background: r.status === 'New' ? '#ecfdf5' : r.status === 'Duplicate' ? '#fef2f2' : '#fffbeb',
+                            background: r.status === 'New' ? '#ecfdf5' : r.status === 'Duplicate' ? 'var(--danger)' : '#fffbeb',
                             color: r.status === 'New' ? '#059669' : r.status === 'Duplicate' ? '#dc2626' : '#d97706'
                           }}>
                             {r.status === 'Duplicate' && <AlertTriangle size={12} />}
@@ -252,7 +252,7 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
                   onClick={() => handleImport(false)} 
                   disabled={isProcessing || duplicateCount === 0} 
                   style={{
-                    padding: '0.75rem 1.5rem', background: 'transparent', color: '#ef4444',
+                    padding: '0.75rem 1.5rem', background: 'transparent', color: 'var(--danger)',
                     border: '1px solid #fca5a5', borderRadius: 'var(--radius-sm)', fontWeight: 500, cursor: 'pointer',
                     opacity: isProcessing || duplicateCount === 0 ? 0.5 : 1
                   }}
@@ -264,7 +264,7 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
                   onClick={handleCancel} 
                   disabled={isProcessing} 
                   style={{
-                    padding: '0.75rem 1.5rem', background: '#f1f5f9', color: 'var(--text-main)',
+                    padding: '0.75rem 1.5rem', background: 'var(--bg-hover)', color: 'var(--text-main)',
                     border: 'none', borderRadius: 'var(--radius-sm)', fontWeight: 500, cursor: 'pointer'
                   }}
                 >
