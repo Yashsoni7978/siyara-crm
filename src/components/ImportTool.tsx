@@ -202,7 +202,7 @@ Elite Wedding & Event Planners\t+919876500222\tinfo@eliteweddings.in\thttps://el
                 overflowY: 'auto', 
                 border: '1px solid var(--border-main)', 
                 borderRadius: 'var(--radius-md)', 
-                background: 'white',
+                background: 'var(--bg-card)',
                 boxShadow: 'var(--shadow-sm)' 
               }}>
                 <table style={{ width: '100%', fontSize: '0.9rem', borderCollapse: 'collapse' }}>

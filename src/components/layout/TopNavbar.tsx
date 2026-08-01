@@ -108,7 +108,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ role, activeMenu, onLogout
               left: 0,
               right: 0,
               marginTop: '4px',
-              background: 'white',
+              background: 'var(--bg-card)',
               border: '1px solid var(--border-main)',
               borderRadius: '8px',
               boxShadow: 'var(--shadow-lg)',

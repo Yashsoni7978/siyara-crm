@@ -349,7 +349,7 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
       </div>
 
       {/* Right Column: Caller Workspace */}
-      <div className={`caller-dashboard-workspace ${showMobileList ? 'mobile-hidden' : ''}`} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'white' }}>
+      <div className={`caller-dashboard-workspace ${showMobileList ? 'mobile-hidden' : ''}`} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg-card)' }}>
         {/* Mobile Back Button */}
         <button 
           className="mobile-only" 

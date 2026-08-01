@@ -108,7 +108,7 @@ export const LeadQueueToolbar: React.FC<LeadQueueToolbarProps> = ({
             padding: '4px 10px', 
             fontSize: '12px', 
             fontWeight: 600,
-            background: showFilters || activeFiltersCount > 0 ? 'var(--primary-light)' : 'white',
+            background: showFilters || activeFiltersCount > 0 ? 'var(--primary-light)' : 'var(--bg-card)',
             color: showFilters || activeFiltersCount > 0 ? 'var(--primary)' : 'var(--text-muted)',
             border: '1px solid',
             borderColor: showFilters || activeFiltersCount > 0 ? 'var(--primary)' : 'var(--border-main)',
