@@ -128,7 +128,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
                 onChange={e => { setSearchTerm(e.target.value); setPage(1); }}
                 style={{ width: '260px' }}
               />
-              <select className="input-field" value={selectedCategory} onChange={e => { setSelectedCategory(e.target.value); setPage(1); }} style={{ width: '150px', fontWeight: selectedCategory === 'Doctor' ? 600 : 400 }}>
+              <select className="input-field" value={selectedCategory} onChange={e => { setSelectedCategory(e.target.value); setPage(1); }} style={{ width: '160px', fontWeight: selectedCategory !== 'ALL' ? 600 : 400 }}>
                 <option value="ALL">All Categories</option>
                 {CATEGORIES.map(cat => (
                   <option key={cat} value={cat}>{cat}</option>
@@ -152,46 +152,6 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
                 <option value="Low">Low</option>
                 <option value="None">None</option>
               </select>
-              <button 
-                type="button"
-                className="btn"
-                onClick={() => { setSelectedCategory(selectedCategory === 'Doctor' ? 'ALL' : 'Doctor'); setPage(1); }}
-                style={{
-                  background: selectedCategory === 'Doctor' ? 'var(--primary-light, #eff6ff)' : 'var(--bg-main, #f8fafc)',
-                  color: selectedCategory === 'Doctor' ? 'var(--primary, #2563eb)' : 'var(--text-main, #334155)',
-                  border: `1px solid ${selectedCategory === 'Doctor' ? 'var(--primary, #2563eb)' : 'var(--border-main, #cbd5e1)'}`,
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  padding: '6px 12px',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}
-              >
-                🩺 Doctor Leads {selectedCategory === 'Doctor' && '✓'}
-              </button>
-              <button 
-                type="button"
-                className="btn"
-                onClick={() => { setSelectedCategory(selectedCategory === 'Anchor' ? 'ALL' : 'Anchor'); setPage(1); }}
-                style={{
-                  background: selectedCategory === 'Anchor' ? 'var(--primary-light, #eff6ff)' : 'var(--bg-main, #f8fafc)',
-                  color: selectedCategory === 'Anchor' ? 'var(--primary, #2563eb)' : 'var(--text-main, #334155)',
-                  border: `1px solid ${selectedCategory === 'Anchor' ? 'var(--primary, #2563eb)' : 'var(--border-main, #cbd5e1)'}`,
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  padding: '6px 12px',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}
-              >
-                🎙️ Anchor Leads {selectedCategory === 'Anchor' && '✓'}
-              </button>
             </div>
 
             {/* Data Table */}
