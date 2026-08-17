@@ -41,12 +41,9 @@ async function run() {
           const caller = callers[i % callers.length];
           const cat = row['Category'] || '';
           const catLower = cat.toLowerCase();
-          let listName = 'Event Managers in Jaipur';
-          if (catLower.includes('doctor') || catLower.includes('physio') || catLower.includes('dentist')) {
-            listName = 'Doctors in Jaipur';
-          } else if (catLower.includes('anchor') || catLower.includes('emcee')) {
-            listName = 'Anchors';
-          }
+          let listName = catLower.includes('doctor') || catLower.includes('physio') || catLower.includes('dentist')
+            ? 'Doctors in Jaipur'
+            : 'Event Managers in Jaipur';
 
           return {
             organizationId: org.id,

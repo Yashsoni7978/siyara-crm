@@ -23,7 +23,6 @@ export const CATEGORIES: Category[] = [
   'Event Manager',
   'Event Planner',
   'Event Designer',
-  'Anchor',
   'Decorator',
   'Other',
 ];

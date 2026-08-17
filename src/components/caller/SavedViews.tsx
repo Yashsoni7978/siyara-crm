@@ -15,8 +15,6 @@ export interface SavedView {
 
 export const PRESET_VIEWS: SavedView[] = [
   { id: 'all', label: 'My Leads', filters: {} },
-  { id: 'doctors', label: '🩺 Doctor Leads', filters: { category: ['Doctor'] } },
-  { id: 'anchors', label: '🎙️ Anchor Leads', filters: { category: ['Anchor'] } },
   { id: 'follow-ups', label: "Today's Follow-ups", filters: { followUpToday: true } },
   { id: 'high-priority', label: 'High Priority', filters: { priority: ['High'] } },
   { id: 'new-imports', label: 'New Imports', filters: { sortBy: 'createdAt', sortOrder: 'desc' } },

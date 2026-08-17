@@ -67,14 +67,6 @@ export async function GET(request: Request) {
           { category: { contains: 'Dentist' } },
           { category: { contains: 'Physiotherapist' } }
         );
-      } else if (cat === 'Anchor') {
-        categoryConditions.push(
-          { category: { equals: 'Anchor' } },
-          { category: { contains: 'Anchor' } },
-          { category: { contains: 'anchor' } },
-          { category: { contains: 'Emcee' } },
-          { category: { contains: 'emcee' } }
-        );
       } else {
         categoryConditions.push({ category: { equals: cat } });
       }

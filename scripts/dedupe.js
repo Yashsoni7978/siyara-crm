@@ -64,26 +64,19 @@ function processRow(row, filePath) {
   ].filter(Boolean).join(' ');
 
   if (isAnchorDir) {
-    const nameLower = cleanedName.toLowerCase();
-    const catLower = category.toLowerCase();
+    // Completely exclude all data from anchor directory
+    return;
+  }
 
-    // Skip doctor/hospital entries inside anchor files
-    if (catLower.includes('doctor') || catLower.includes('clinic') || catLower.includes('hospital') || nameLower.startsWith('dr. ') || nameLower.startsWith('dr ')) {
-      return;
-    }
+  const catLower = category.toLowerCase();
+  const nameLower = cleanedName.toLowerCase();
 
-    const hasJaipur = (allAddressStr + ' ' + cleanedName + ' ' + mapsLink).toLowerCase().includes('jaipur');
-    const isAnchorYash = nameLower.includes('yash');
+  if (catLower.includes('anchor') || catLower.includes('emcee') || nameLower.includes('anchor') || nameLower.includes('emcee')) {
+    // Completely exclude any anchor/emcee lead
+    return;
+  }
 
-    // Filter rules for anchor directory:
-    // 1. Remove anyone with Jaipur in address/name/mapsLink
-    // 2. Remove anyone named Anchor Yash / containing 'yash'
-    if (hasJaipur || isAnchorYash) {
-      return;
-    }
-    category = 'Anchor';
-  } else if (isDoctorDir) {
-    const catLower = category.toLowerCase();
+  if (isDoctorDir) {
     if (catLower.includes('dentist')) {
       category = 'Dentist';
     } else if (catLower.includes('physio')) {
@@ -91,19 +84,8 @@ function processRow(row, filePath) {
     } else {
       category = 'Doctor';
     }
-  } else {
-    const catLower = category.toLowerCase();
-    const nameLower = cleanedName.toLowerCase();
-    if (catLower.includes('anchor') || catLower.includes('emcee') || nameLower.includes('anchor') || nameLower.includes('emcee')) {
-      const hasJaipur = (allAddressStr + ' ' + cleanedName + ' ' + mapsLink).toLowerCase().includes('jaipur');
-      const isAnchorYash = nameLower.includes('yash');
-      if (hasJaipur || isAnchorYash) {
-        return;
-      }
-      category = 'Anchor';
-    } else if (!category || category === '·') {
-      category = 'General';
-    }
+  } else if (!category || category === '·') {
+    category = 'General';
   }
 
   const reviewCount = String(reviewCountRaw).replace(/[^\d]/g, '');
