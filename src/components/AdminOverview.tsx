@@ -8,7 +8,7 @@ import { AnalyticsCards } from './data-display/AnalyticsCards';
 import { AdminCallers } from './AdminCallers';
 import { AdminAnalytics } from './AdminAnalytics';
 import { AdminSettings } from './AdminSettings';
-import { STATUS_CONFIG } from '../lib/constants';
+import { CATEGORIES, STATUS_CONFIG } from '../lib/constants';
 
 interface AdminOverviewProps {
   onImportComplete: (updatedLeads: Lead[], summary: ImportSummary) => void;
@@ -26,6 +26,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [selectedPriority, setSelectedPriority] = useState<string>('ALL');
   const [selectedCaller, setSelectedCaller] = useState<string>('ALL');
+  const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalLeads, setTotalLeads] = useState(0);
@@ -41,6 +42,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
         search: searchTerm,
         status: selectedStatus,
         priority: selectedPriority,
+        category: selectedCategory,
         assignedToId: selectedCaller
       });
       const res = await fetch(`/api/leads?${query.toString()}`);
@@ -63,7 +65,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
       fetchLeads();
     }, 300);
     return () => clearTimeout(timer);
-  }, [page, searchTerm, selectedStatus, selectedPriority, selectedCaller]);
+  }, [page, searchTerm, selectedStatus, selectedPriority, selectedCaller, selectedCategory]);
 
   const renderContent = () => {
     switch (activeMenu) {
@@ -117,33 +119,79 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
             </div>
 
             {/* Filters */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
               <input
                 type="text"
                 className="input-field"
                 placeholder="Search by business name or phone..."
                 value={searchTerm}
                 onChange={e => { setSearchTerm(e.target.value); setPage(1); }}
-                style={{ width: '300px' }}
+                style={{ width: '260px' }}
               />
-              <select className="input-field" value={selectedCaller} onChange={e => { setSelectedCaller(e.target.value); setPage(1); }} style={{ width: '150px' }}>
+              <select className="input-field" value={selectedCategory} onChange={e => { setSelectedCategory(e.target.value); setPage(1); }} style={{ width: '150px', fontWeight: selectedCategory === 'Doctor' ? 600 : 400 }}>
+                <option value="ALL">All Categories</option>
+                {CATEGORIES.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+              <select className="input-field" value={selectedCaller} onChange={e => { setSelectedCaller(e.target.value); setPage(1); }} style={{ width: '130px' }}>
                 <option value="ALL">All Callers</option>
                 <option value="User 1">User 1</option>
                 <option value="User 2">User 2</option>
               </select>
-              <select className="input-field" value={selectedStatus} onChange={e => { setSelectedStatus(e.target.value); setPage(1); }} style={{ width: '150px' }}>
+              <select className="input-field" value={selectedStatus} onChange={e => { setSelectedStatus(e.target.value); setPage(1); }} style={{ width: '130px' }}>
                 <option value="ALL">All Statuses</option>
                 {Object.keys(STATUS_CONFIG).map(status => (
                   <option key={status} value={status}>{status}</option>
                 ))}
               </select>
-              <select className="input-field" value={selectedPriority} onChange={e => { setSelectedPriority(e.target.value); setPage(1); }} style={{ width: '150px' }}>
+              <select className="input-field" value={selectedPriority} onChange={e => { setSelectedPriority(e.target.value); setPage(1); }} style={{ width: '130px' }}>
                 <option value="ALL">All Priorities</option>
                 <option value="High">High</option>
                 <option value="Medium">Medium</option>
                 <option value="Low">Low</option>
                 <option value="None">None</option>
               </select>
+              <button 
+                type="button"
+                className="btn"
+                onClick={() => { setSelectedCategory(selectedCategory === 'Doctor' ? 'ALL' : 'Doctor'); setPage(1); }}
+                style={{
+                  background: selectedCategory === 'Doctor' ? 'var(--primary-light, #eff6ff)' : 'var(--bg-main, #f8fafc)',
+                  color: selectedCategory === 'Doctor' ? 'var(--primary, #2563eb)' : 'var(--text-main, #334155)',
+                  border: `1px solid ${selectedCategory === 'Doctor' ? 'var(--primary, #2563eb)' : 'var(--border-main, #cbd5e1)'}`,
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  padding: '6px 12px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}
+              >
+                🩺 Doctor Leads {selectedCategory === 'Doctor' && '✓'}
+              </button>
+              <button 
+                type="button"
+                className="btn"
+                onClick={() => { setSelectedCategory(selectedCategory === 'Anchor' ? 'ALL' : 'Anchor'); setPage(1); }}
+                style={{
+                  background: selectedCategory === 'Anchor' ? 'var(--primary-light, #eff6ff)' : 'var(--bg-main, #f8fafc)',
+                  color: selectedCategory === 'Anchor' ? 'var(--primary, #2563eb)' : 'var(--text-main, #334155)',
+                  border: `1px solid ${selectedCategory === 'Anchor' ? 'var(--primary, #2563eb)' : 'var(--border-main, #cbd5e1)'}`,
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  padding: '6px 12px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}
+              >
+                🎙️ Anchor Leads {selectedCategory === 'Anchor' && '✓'}
+              </button>
             </div>
 
             {/* Data Table */}

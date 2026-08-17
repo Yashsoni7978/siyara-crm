@@ -55,7 +55,42 @@ export async function GET(request: Request) {
   }
 
   if (categoryArray.length > 0) {
-    where.category = { in: categoryArray };
+    const categoryConditions: Prisma.LeadWhereInput[] = [];
+
+    for (const cat of categoryArray) {
+      if (cat === 'Doctor') {
+        categoryConditions.push(
+          { category: { equals: 'Doctor' } },
+          { category: { contains: 'Doctor' } },
+          { category: { contains: 'physician' } },
+          { category: { contains: 'practitioner' } },
+          { category: { contains: 'Dentist' } },
+          { category: { contains: 'Physiotherapist' } }
+        );
+      } else if (cat === 'Anchor') {
+        categoryConditions.push(
+          { category: { equals: 'Anchor' } },
+          { category: { contains: 'Anchor' } },
+          { category: { contains: 'anchor' } },
+          { category: { contains: 'Emcee' } },
+          { category: { contains: 'emcee' } }
+        );
+      } else {
+        categoryConditions.push({ category: { equals: cat } });
+      }
+    }
+
+    if (categoryConditions.length > 0) {
+      if (where.OR) {
+        where.AND = [
+          { OR: where.OR },
+          { OR: categoryConditions }
+        ];
+        delete where.OR;
+      } else {
+        where.OR = categoryConditions;
+      }
+    }
   }
 
   if (cityAreaArray.length > 0) {

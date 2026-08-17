@@ -59,40 +59,44 @@ export async function GET(request: Request) {
         .on('error', reject);
     });
 
-    let assignedCount = 0;
-    
-    // We will use a transaction to bulk insert to speed it up and ensure atomicity,
-    // but since they might already exist if hit multiple times, we can use createMany or loop.
-    // Loop is safer for SQLite/Neon mixed compatibility with unique constraints if we had them.
-    for (let i = 0; i < leads.length; i++) {
-      const row = leads[i];
+    // Clear previous leads & activities to avoid duplicate accumulation
+    await prisma.activity.deleteMany({ where: { lead: { organizationId: org.id } } });
+    await prisma.lead.deleteMany({ where: { organizationId: org.id } });
+
+    const dataToInsert = leads.map((row, i) => {
       const caller = callers[i % callers.length];
-      
-      await prisma.lead.create({
-        data: {
-          organizationId: org.id,
-          assignedToId: caller.id,
-          businessName: row['Business Name'] || 'Unknown Business',
-          phone: row['Phone'] || '',
-          website: row['Website'] || null,
-          mapsLink: row['Maps Link'] || null,
-          rating: row['Rating'] ? parseFloat(row['Rating']) : null,
-          reviewCount: row['Review Count'] ? parseInt(row['Review Count'], 10) : null,
-          category: row['Category'] || '',
-          address: row['Address'] || null,
-          openingHours: row['Opening Hours'] || null,
-          status: 'Not Called',
-          priority: 'None',
-          listName: LIST_NAME
-        }
-      });
-      assignedCount++;
-    }
+      const cat = row['Category'] || '';
+      const catLower = cat.toLowerCase();
+      let listName = 'Event Managers in Jaipur';
+      if (catLower.includes('doctor') || catLower.includes('physio') || catLower.includes('dentist')) {
+        listName = 'Doctors in Jaipur';
+      } else if (catLower.includes('anchor') || catLower.includes('emcee')) {
+        listName = 'Anchors';
+      }
+
+      return {
+        organizationId: org.id,
+        assignedToId: caller.id,
+        businessName: row['Business Name'] || 'Unknown Business',
+        phone: row['Phone'] || '',
+        website: row['Website'] || null,
+        mapsLink: row['Maps Link'] || null,
+        rating: row['Rating'] ? parseFloat(row['Rating']) : null,
+        reviewCount: row['Review Count'] ? parseInt(row['Review Count'], 10) : null,
+        category: cat,
+        address: row['Address'] || null,
+        openingHours: row['Opening Hours'] || null,
+        status: 'Not Called',
+        priority: 'None',
+        listName: listName
+      };
+    });
+
+    await prisma.lead.createMany({ data: dataToInsert });
 
     return NextResponse.json({ 
       message: 'Database seeded successfully from CSV.', 
-      count: assignedCount,
-      listName: LIST_NAME
+      count: dataToInsert.length
     }, { status: 200 });
 
   } catch (error: any) {

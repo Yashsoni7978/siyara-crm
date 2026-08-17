@@ -8,20 +8,25 @@ const dataFile = path.join(__dirname, '../data/polished_leads.csv');
 const LIST_NAME = 'Event Managers in Jaipur';
 
 async function run() {
-  const org = await prisma.organization.findFirst({ where: { name: 'Siyara Enterprise Demo' }});
+  let org = await prisma.organization.findFirst({ where: { name: 'Siyara Enterprise Demo' } });
   if (!org) {
-    console.error('Organization not found. Please run the seed endpoint first.');
-    process.exit(1);
+    org = await prisma.organization.create({ data: { name: 'Siyara Enterprise Demo' } });
   }
 
-  const user1 = await prisma.user.findFirst({ where: { name: 'User 1' }});
-  const user2 = await prisma.user.findFirst({ where: { name: 'User 2' }});
+  let user1 = await prisma.user.findFirst({ where: { name: 'User 1' } });
+  if (!user1) {
+    user1 = await prisma.user.create({ data: { name: 'User 1', email: 'user1@siyara.com', role: 'Caller', organizationId: org.id } });
+  }
+
+  let user2 = await prisma.user.findFirst({ where: { name: 'User 2' } });
+  if (!user2) {
+    user2 = await prisma.user.create({ data: { name: 'User 2', email: 'user2@siyara.com', role: 'Caller', organizationId: org.id } });
+  }
+
   const callers = [user1, user2].filter(Boolean);
 
-  if (callers.length === 0) {
-    console.error('No callers found to assign leads.');
-    process.exit(1);
-  }
+  await prisma.activity.deleteMany({ where: { lead: { organizationId: org.id } } });
+  await prisma.lead.deleteMany({ where: { organizationId: org.id } });
 
   const leads = [];
 
@@ -32,34 +37,38 @@ async function run() {
         leads.push(row);
       })
       .on('end', async () => {
-        let assignedCount = 0;
-        
-        for (let i = 0; i < leads.length; i++) {
-          const row = leads[i];
-          const caller = callers[i % callers.length]; // Round robin assignment
-          
-          await prisma.lead.create({
-            data: {
-              organizationId: org.id,
-              assignedToId: caller.id,
-              businessName: row['Business Name'] || 'Unknown Business',
-              phone: row['Phone'] || '',
-              website: row['Website'] || null,
-              mapsLink: row['Maps Link'] || null,
-              rating: row['Rating'] ? parseFloat(row['Rating']) : null,
-              reviewCount: row['Review Count'] ? parseInt(row['Review Count'], 10) : null,
-              category: row['Category'] || '',
-              address: row['Address'] || null,
-              openingHours: row['Opening Hours'] || null,
-              status: 'Not Called',
-              priority: 'None',
-              listName: LIST_NAME
-            }
-          });
-          assignedCount++;
-        }
+        const dataToInsert = leads.map((row, i) => {
+          const caller = callers[i % callers.length];
+          const cat = row['Category'] || '';
+          const catLower = cat.toLowerCase();
+          let listName = 'Event Managers in Jaipur';
+          if (catLower.includes('doctor') || catLower.includes('physio') || catLower.includes('dentist')) {
+            listName = 'Doctors in Jaipur';
+          } else if (catLower.includes('anchor') || catLower.includes('emcee')) {
+            listName = 'Anchors';
+          }
 
-        console.log(`Successfully imported and assigned ${assignedCount} leads to list "${LIST_NAME}".`);
+          return {
+            organizationId: org.id,
+            assignedToId: caller.id,
+            businessName: row['Business Name'] || 'Unknown Business',
+            phone: row['Phone'] || '',
+            website: row['Website'] || null,
+            mapsLink: row['Maps Link'] || null,
+            rating: row['Rating'] ? parseFloat(row['Rating']) : null,
+            reviewCount: row['Review Count'] ? parseInt(row['Review Count'], 10) : null,
+            category: cat,
+            address: row['Address'] || null,
+            openingHours: row['Opening Hours'] || null,
+            status: 'Not Called',
+            priority: 'None',
+            listName: listName
+          };
+        });
+
+        await prisma.lead.createMany({ data: dataToInsert });
+
+        console.log(`Successfully imported and assigned ${dataToInsert.length} leads.`);
         await prisma.$disconnect();
         resolve();
       });

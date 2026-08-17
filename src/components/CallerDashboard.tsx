@@ -108,7 +108,7 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
     } finally {
       setIsLoading(false);
     }
-  }, [userId, page, search, statusFilter, priorityFilter, activeLeadId, activeMenu]); // Exclude phase G filters from deps for now
+  }, [userId, page, search, statusFilter, priorityFilter, categoryFilter, locationFilter, sortBy, sortOrder, activeLeadId, activeMenu]);
 
   // Refetch when dependencies change
   useEffect(() => {
