@@ -128,7 +128,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
                 onChange={e => { setSearchTerm(e.target.value); setPage(1); }}
                 style={{ width: '260px' }}
               />
-              <select className="input-field" value={selectedCategory} onChange={e => { setSelectedCategory(e.target.value); setPage(1); }} style={{ width: '160px', fontWeight: selectedCategory !== 'ALL' ? 600 : 400 }}>
+              <select className="input-field" value={selectedCategory} onChange={e => { setSelectedCategory(e.target.value); setPage(1); }} style={{ width: '160px' }}>
                 <option value="ALL">All Categories</option>
                 {CATEGORIES.map(cat => (
                   <option key={cat} value={cat}>{cat}</option>
