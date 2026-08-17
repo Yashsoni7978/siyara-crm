@@ -1,7 +1,7 @@
 import React from 'react';
 import { Phone, MessageCircle, Mail, Calendar, StickyNote, ArrowRightLeft, MoreHorizontal } from 'lucide-react';
 import { Lead, CallStatus } from '../../types/crm';
-import { STATUS_CONFIG } from '../../lib/constants';
+import { STATUS_CONFIG, formatWhatsAppNumber } from '../../lib/constants';
 
 interface QuickActionsProps {
   lead: Lead;
@@ -16,9 +16,13 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
   onAddNote,
   onScheduleFollowUp,
 }) => {
+  const waNumber = formatWhatsAppNumber(lead.phone);
+  const waHref = waNumber ? `https://wa.me/${waNumber}` : undefined;
+  const telHref = lead.phone ? `tel:${lead.phone.replace(/[^0-9+]/g, '')}` : undefined;
+
   const actions: Array<{ icon: React.ReactNode; label: string; href?: string; onClick?: () => void; shortcut?: string; className: string }> = [
-    { icon: <Phone size={14} />, label: 'Call', href: `tel:${lead.phone}`, className: 'cw-action-btn-call' },
-    { icon: <MessageCircle size={14} />, label: 'WhatsApp', href: `https://wa.me/${lead.phone?.replace(/[^0-9]/g, '')}`, className: 'cw-action-btn-whatsapp' },
+    { icon: <Phone size={14} />, label: 'Call', href: telHref, className: 'cw-action-btn-call' },
+    { icon: <MessageCircle size={14} />, label: 'WhatsApp', href: waHref, className: 'cw-action-btn-whatsapp' },
     { icon: <Mail size={14} />, label: 'Email', href: lead.email ? `mailto:${lead.email}` : undefined, className: 'cw-action-btn-email' },
     { icon: <Calendar size={14} />, label: 'Follow-up', onClick: onScheduleFollowUp, className: 'cw-action-btn-followup' },
     { icon: <StickyNote size={14} />, label: 'Note', onClick: onAddNote, shortcut: 'N', className: 'cw-action-btn-note' },
@@ -43,13 +47,28 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
               </a>
             );
           }
+          if (action.onClick) {
+            return (
+              <button
+                key={action.label}
+                type="button"
+                className={`cw-action-btn ${action.className}`}
+                onClick={action.onClick}
+                title={action.shortcut ? `${action.label} (${action.shortcut})` : action.label}
+              >
+                {action.icon}
+                <span>{action.label}</span>
+              </button>
+            );
+          }
           return (
             <button
               key={action.label}
               type="button"
+              disabled
               className={`cw-action-btn ${action.className}`}
-              onClick={action.onClick}
-              title={action.shortcut ? `${action.label} (${action.shortcut})` : action.label}
+              style={{ opacity: 0.4, cursor: 'not-allowed' }}
+              title="No number/email available"
             >
               {action.icon}
               <span>{action.label}</span>

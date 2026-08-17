@@ -2,6 +2,20 @@ import { CallStatus, Category, Lead } from '../types/crm';
 
 export const CALLERS = ['User 1', 'User 2'] as const;
 
+export function formatWhatsAppNumber(phone?: string | null): string {
+  if (!phone) return '';
+  let digits = phone.replace(/\D/g, '');
+  if (!digits) return '';
+  if (digits.startsWith('910')) {
+    digits = '91' + digits.slice(3).replace(/^0+/, '');
+  }
+  digits = digits.replace(/^0+/, '');
+  if (digits.length === 10) {
+    digits = '91' + digits;
+  }
+  return digits;
+}
+
 export const CATEGORIES: Category[] = [
   'Doctor',
   'Dentist',

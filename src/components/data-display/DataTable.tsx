@@ -1,6 +1,7 @@
 import React from 'react';
 import { Lead, CallStatus } from '../../types/crm';
-import { STATUS_CONFIG } from '../../lib/constants';
+import { STATUS_CONFIG, formatWhatsAppNumber } from '../../lib/constants';
+import { MessageCircle } from 'lucide-react';
 
 interface DataTableProps {
   leads: Lead[];
@@ -27,6 +28,7 @@ export const DataTable: React.FC<DataTableProps> = ({ leads, onRowClick }) => {
         <tbody>
           {leads.map((lead) => {
             const statusStyle = STATUS_CONFIG[lead.status] || STATUS_CONFIG['Not Called'];
+            const waNumber = formatWhatsAppNumber(lead.phone);
             
             let priorityColor = '#6B7280';
             if (lead.priority === 'High') priorityColor = '#DC2626';
@@ -37,11 +39,24 @@ export const DataTable: React.FC<DataTableProps> = ({ leads, onRowClick }) => {
               <tr key={lead.id} onClick={() => onRowClick && onRowClick(lead)} style={{ cursor: onRowClick ? 'pointer' : 'default' }}>
                 <td style={{ fontWeight: 600, color: 'var(--text-main)' }}>
                   {lead.businessName}
-                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400, marginTop: '2px' }}>
-                    {lead.phone}
+                </td>
+                <td>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span>{lead.phone || '-'}</span>
+                    {waNumber && (
+                      <a 
+                        href={`https://wa.me/${waNumber}`} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        title="Chat on WhatsApp"
+                        onClick={e => e.stopPropagation()}
+                        style={{ color: '#25D366', display: 'inline-flex', alignItems: 'center' }}
+                      >
+                        <MessageCircle size={14} />
+                      </a>
+                    )}
                   </div>
                 </td>
-                <td>{lead.phone}</td>
                 <td style={{ color: 'var(--text-muted)' }}>{lead.category || '-'}</td>
                 <td style={{ color: 'var(--text-muted)' }}>
                   {lead.cityArea || lead.address || '-'}
