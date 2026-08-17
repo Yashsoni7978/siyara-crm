@@ -59,26 +59,30 @@ export const LeadQueue: React.FC<LeadQueueProps> = ({
   return (
     <div className="lq-queue" tabIndex={0} onKeyDown={handleKeyDown} role="listbox" aria-label="Lead Queue">
       {/* Queue Header */}
-      <div className="lq-queue-header">
-        <span className="lq-queue-count">{total} leads</span>
+      <div className="lq-queue-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', background: 'var(--bg-card)', borderBottom: '1px solid var(--border-main)' }}>
+        <span className="lq-queue-count" style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          📊 Total Leads: <span style={{ background: 'var(--primary-light, #eff6ff)', color: 'var(--primary, #2563eb)', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 800 }}>{total}</span>
+        </span>
         {totalPages > 1 && (
-          <div className="lq-queue-pagination">
+          <div className="lq-queue-pagination" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <button
               type="button"
               className="lq-queue-page-btn"
               disabled={page <= 1}
               onClick={() => onPageChange(page - 1)}
               aria-label="Previous page"
+              style={{ padding: '2px 8px', borderRadius: '4px', cursor: page > 1 ? 'pointer' : 'default' }}
             >
               ‹
             </button>
-            <span className="lq-queue-page-info">{page}/{totalPages}</span>
+            <span className="lq-queue-page-info" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Page {page} of {totalPages}</span>
             <button
               type="button"
               className="lq-queue-page-btn"
               disabled={page >= totalPages}
               onClick={() => onPageChange(page + 1)}
               aria-label="Next page"
+              style={{ padding: '2px 8px', borderRadius: '4px', cursor: page < totalPages ? 'pointer' : 'default' }}
             >
               ›
             </button>
