@@ -15,7 +15,7 @@ export interface SavedView {
 
 export const PRESET_VIEWS: SavedView[] = [
   { id: 'all', label: 'My Leads', filters: {} },
-  { id: 'events', label: '🎉 Event Leads', filters: { category: ['Event Manager', 'Event Planner', 'Event Designer', 'Decorator'] } },
+  { id: 'events', label: '🎉 Event Leads', filters: { category: ['Event Manager', 'Event Planner', 'Event management company', 'Wedding planner', 'Event Designer', 'Decorator'] } },
   { id: 'doctors', label: '🩺 Doctor Leads', filters: { category: ['Doctor', 'Dentist', 'Physiotherapist'] } },
   { id: 'follow-ups', label: "Today's Follow-ups", filters: { followUpToday: true } },
   { id: 'high-priority', label: 'High Priority', filters: { priority: ['High'] } },

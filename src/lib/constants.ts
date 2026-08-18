@@ -22,8 +22,12 @@ export const CATEGORIES: Category[] = [
   'Physiotherapist',
   'Event Manager',
   'Event Planner',
+  'Event management company',
+  'Wedding planner',
   'Event Designer',
   'Decorator',
+  'Banquet hall',
+  'Event venue',
   'Other',
 ];
 

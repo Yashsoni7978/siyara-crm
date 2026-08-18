@@ -10,6 +10,8 @@ import { AdminAnalytics } from './AdminAnalytics';
 import { AdminSettings } from './AdminSettings';
 import { CATEGORIES, STATUS_CONFIG } from '../lib/constants';
 
+import { getPrimaryOrganizationId } from '../app/actions';
+
 interface AdminOverviewProps {
   onImportComplete: (updatedLeads: Lead[], summary: ImportSummary) => void;
   onResetData: () => void;
@@ -22,6 +24,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
   activeMenu
 }) => {
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [orgId, setOrgId] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [selectedPriority, setSelectedPriority] = useState<string>('ALL');
@@ -31,6 +34,12 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
   const [totalPages, setTotalPages] = useState(1);
   const [totalLeads, setTotalLeads] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getPrimaryOrganizationId().then(id => {
+      if (id) setOrgId(id);
+    });
+  }, []);
 
   // Fetch leads from server
   const fetchLeads = async () => {
@@ -87,7 +96,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
               <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '8px' }}>Import Engine</h2>
               <p style={{ color: 'var(--text-muted)' }}>Upload and parse CSV data directly into the master database.</p>
             </div>
-            <ImportTool onImportComplete={onImportComplete} organizationId="siyara-enterprise-id-1" />
+            <ImportTool onImportComplete={(leads, summary) => { onImportComplete(leads, summary); fetchLeads(); }} organizationId={orgId || 'siyara-enterprise-id-1'} />
           </div>
         );
         

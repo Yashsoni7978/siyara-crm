@@ -14,17 +14,28 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
   onSave,
   isSaving
 }) => {
+  const formatDateForInput = (dateVal?: string | Date | null) => {
+    if (!dateVal) return '';
+    try {
+      const d = new Date(dateVal);
+      if (isNaN(d.getTime())) return '';
+      return d.toISOString().split('T')[0];
+    } catch {
+      return '';
+    }
+  };
+
   const [localPriority, setLocalPriority] = useState<'High' | 'Medium' | 'Low' | 'None'>(
     (lead.priority as 'High' | 'Medium' | 'Low' | 'None') || 'None'
   );
   const [localFollowUp, setLocalFollowUp] = useState(
-    lead.followUpDate ? new Date(lead.followUpDate).toISOString().split('T')[0] : ''
+    formatDateForInput(lead.followUpDate)
   );
 
   // Sync when lead changes
   React.useEffect(() => {
     setLocalPriority(lead.priority || 'None');
-    setLocalFollowUp(lead.followUpDate ? new Date(lead.followUpDate).toISOString().split('T')[0] : '');
+    setLocalFollowUp(formatDateForInput(lead.followUpDate));
   }, [lead.id, lead.priority, lead.followUpDate]);
 
   const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

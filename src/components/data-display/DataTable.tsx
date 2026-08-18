@@ -85,7 +85,18 @@ export const DataTable: React.FC<DataTableProps> = ({ leads, onRowClick }) => {
                   ) : '-'}
                 </td>
                 <td>{lead.assignedTo?.name || '-'}</td>
-                <td>{lead.followUpDate || '-'}</td>
+                <td>
+                  {lead.followUpDate 
+                    ? (() => {
+                        try {
+                          const d = new Date(lead.followUpDate);
+                          return isNaN(d.getTime()) ? '-' : d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                        } catch {
+                          return '-';
+                        }
+                      })()
+                    : '-'}
+                </td>
               </tr>
             );
           })}

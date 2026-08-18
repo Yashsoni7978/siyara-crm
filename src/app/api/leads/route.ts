@@ -30,64 +30,78 @@ export async function GET(request: Request) {
   const validSortFields = ['createdAt', 'updatedAt', 'followUpDate', 'priority', 'rating', 'reviewCount', 'businessName'];
   const finalSortBy = validSortFields.includes(sortBy) ? sortBy : 'updatedAt';
 
-  const where: Prisma.LeadWhereInput = {};
-  
+  const andConditions: Prisma.LeadWhereInput[] = [];
+
   if (search) {
-    where.OR = [
-      { businessName: { contains: search } },
-      { phone: { contains: search } },
-      { website: { contains: search } },
-      { address: { contains: search } },
-      { category: { contains: search } },
-    ];
+    andConditions.push({
+      OR: [
+        { businessName: { contains: search } },
+        { phone: { contains: search } },
+        { website: { contains: search } },
+        { address: { contains: search } },
+        { category: { contains: search } },
+      ]
+    });
   }
 
   if (assignedToId && assignedToId !== 'ALL') {
-    where.assignedToId = assignedToId;
+    andConditions.push({
+      OR: [
+        { assignedToId: assignedToId },
+        { assignedTo: { name: assignedToId } }
+      ]
+    });
   }
 
   if (statusArray.length > 0) {
-    where.status = { in: statusArray };
+    andConditions.push({ status: { in: statusArray } });
   }
 
   if (priorityArray.length > 0) {
-    where.priority = { in: priorityArray };
+    andConditions.push({ priority: { in: priorityArray } });
   }
 
   if (categoryArray.length > 0) {
     const categoryConditions: Prisma.LeadWhereInput[] = [];
-
     for (const cat of categoryArray) {
-      if (cat === 'Doctor') {
+      categoryConditions.push(
+        { category: { equals: cat } },
+        { category: { contains: cat } }
+      );
+
+      const catLower = cat.toLowerCase();
+      if (catLower.includes('doctor') || catLower.includes('dentist') || catLower.includes('physio')) {
         categoryConditions.push(
-          { category: { equals: 'Doctor' } },
           { category: { contains: 'Doctor' } },
           { category: { contains: 'physician' } },
           { category: { contains: 'practitioner' } },
           { category: { contains: 'Dentist' } },
           { category: { contains: 'Physiotherapist' } }
         );
-      } else {
-        categoryConditions.push({ category: { equals: cat } });
       }
-    }
 
-    if (categoryConditions.length > 0) {
-      if (where.OR) {
-        where.AND = [
-          { OR: where.OR },
-          { OR: categoryConditions }
-        ];
-        delete where.OR;
-      } else {
-        where.OR = categoryConditions;
+      if (
+        catLower.includes('event') || 
+        catLower.includes('manager') || 
+        catLower.includes('planner') || 
+        catLower.includes('designer') || 
+        catLower.includes('decor') ||
+        catLower.includes('wedding')
+      ) {
+        categoryConditions.push(
+          { category: { contains: 'Event' } },
+          { category: { contains: 'Wedding' } },
+          { category: { contains: 'Party' } },
+          { category: { contains: 'Decor' } },
+          { category: { contains: 'Banquet' } }
+        );
       }
     }
+    andConditions.push({ OR: categoryConditions });
   }
 
   if (cityAreaArray.length > 0) {
-    // Exact match on cityArea for now (can be expanded to address search)
-    where.cityArea = { in: cityAreaArray };
+    andConditions.push({ cityArea: { in: cityAreaArray } });
   }
 
   const followUpDue = searchParams.get('followUpDue');
@@ -97,20 +111,21 @@ export async function GET(request: Request) {
     const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
 
     if (followUpDue === 'today') {
-      where.followUpDate = {
-        gte: startOfToday,
-        lte: endOfToday
-      };
+      andConditions.push({
+        followUpDate: { gte: startOfToday, lte: endOfToday }
+      });
     } else if (followUpDue === 'overdue') {
-      where.followUpDate = {
-        lt: startOfToday
-      };
+      andConditions.push({
+        followUpDate: { lt: startOfToday }
+      });
     } else if (followUpDue === 'today_or_overdue') {
-      where.followUpDate = {
-        lte: endOfToday
-      };
+      andConditions.push({
+        followUpDate: { lte: endOfToday }
+      });
     }
   }
+
+  const where: Prisma.LeadWhereInput = andConditions.length > 0 ? { AND: andConditions } : {};
 
   try {
     const [leads, total] = await Promise.all([
