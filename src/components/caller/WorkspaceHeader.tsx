@@ -1,7 +1,7 @@
 import React from 'react';
 import { Lead } from '../../types/crm';
 import { MapPin, Globe, Star, Copy, Check } from 'lucide-react';
-import { STATUS_CONFIG } from '../../lib/constants';
+import { STATUS_CONFIG, formatWebsiteUrl } from '../../lib/constants';
 
 interface WorkspaceHeaderProps {
   lead: Lead;
@@ -10,6 +10,7 @@ interface WorkspaceHeaderProps {
 export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ lead }) => {
   const [copied, setCopied] = React.useState(false);
   const statusStyle = STATUS_CONFIG[lead.status] || STATUS_CONFIG['Not Called'];
+  const formattedWebsite = formatWebsiteUrl(lead.website);
 
   const handleCopyPhone = () => {
     if (lead.phone) {
@@ -71,8 +72,8 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ lead }) => {
                   {lead.reviewCount ? ` (${lead.reviewCount})` : ''}
                 </span>
               )}
-              {lead.website && (
-                <a href={lead.website} target="_blank" rel="noreferrer" className="cw-header-meta-item cw-header-link">
+              {formattedWebsite && (
+                <a href={formattedWebsite} target="_blank" rel="noopener noreferrer" className="cw-header-meta-item cw-header-link">
                   <Globe size={12} />
                   Website
                 </a>
@@ -80,6 +81,7 @@ export const WorkspaceHeader: React.FC<WorkspaceHeaderProps> = ({ lead }) => {
             </div>
           </div>
         </div>
+
         <div className="cw-header-badges">
           <span className="badge" style={{ backgroundColor: statusStyle.bg, color: statusStyle.color, border: `1px solid ${statusStyle.border}` }}>
             {lead.status}

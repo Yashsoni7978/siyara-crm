@@ -45,12 +45,16 @@ export async function GET(request: Request) {
   }
 
   if (assignedToId && assignedToId !== 'ALL') {
-    andConditions.push({
-      OR: [
-        { assignedToId: assignedToId },
-        { assignedTo: { name: assignedToId } }
-      ]
-    });
+    if (assignedToId === 'UNASSIGNED') {
+      andConditions.push({ assignedToId: null });
+    } else {
+      andConditions.push({
+        OR: [
+          { assignedToId: assignedToId },
+          { assignedTo: { name: assignedToId } }
+        ]
+      });
+    }
   }
 
   if (statusArray.length > 0) {
@@ -156,11 +160,67 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+
+    // 1. Resolve Organization ID if not provided
+    let organizationId = body.organizationId;
+    if (!organizationId) {
+      let org = await prisma.organization.findFirst();
+      if (!org) {
+        org = await prisma.organization.create({ data: { name: 'Siyara Enterprise Demo' } });
+      }
+      organizationId = org.id;
+    }
+
+    // 2. Resolve Assigned Caller ID if not provided
+    let assignedToId = body.assignedToId;
+    if (!assignedToId) {
+      const firstCaller = await prisma.user.findFirst({
+        where: { role: 'Caller', organizationId }
+      });
+      if (firstCaller) {
+        assignedToId = firstCaller.id;
+      }
+    }
+
+    // 3. Format Website URL if provided
+    let formattedWebsite = body.website || null;
+    if (formattedWebsite && typeof formattedWebsite === 'string') {
+      const trimmed = formattedWebsite.trim();
+      if (trimmed && !/^https?:\/\//i.test(trimmed)) {
+        formattedWebsite = `https://${trimmed}`;
+      }
+    }
+
+    const leadData = {
+      organizationId,
+      assignedToId: assignedToId || null,
+      businessName: body.businessName || body.name || 'Web Lead',
+      phone: body.phone || '',
+      website: formattedWebsite,
+      mapsLink: body.mapsLink || null,
+      rating: body.rating ? parseFloat(body.rating) : null,
+      reviewCount: body.reviewCount ? parseInt(body.reviewCount, 10) : null,
+      category: body.category || 'Web Lead',
+      address: body.address || body.cityArea || null,
+      cityArea: body.cityArea || null,
+      businessAge: body.businessAge || null,
+      openingHours: body.openingHours || null,
+      latestReview: body.latestReview || null,
+      status: body.status || 'Not Called',
+      priority: body.priority || 'None',
+      listName: body.listName || 'Live Web Leads',
+      followUpDate: body.followUpDate ? new Date(body.followUpDate) : null
+    };
+
     const lead = await prisma.lead.create({
-      data: body
+      data: leadData,
+      include: { assignedTo: true }
     });
+
     return NextResponse.json(lead, { status: 201 });
   } catch (error: any) {
-    return NextResponse.json({ error: 'Failed to create lead' }, { status: 500 });
+    console.error('POST /api/leads Error:', error);
+    return NextResponse.json({ error: error.message || 'Failed to create lead' }, { status: 500 });
   }
 }
+

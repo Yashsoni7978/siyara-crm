@@ -2,11 +2,15 @@ import React from 'react';
 import { Lead } from '../../../types/crm';
 import { ExternalLink, Star } from 'lucide-react';
 
+import { formatWebsiteUrl } from '../../../lib/constants';
+
 interface GoogleBusinessTabProps {
   lead: Lead;
 }
 
 export const GoogleBusinessTab: React.FC<GoogleBusinessTabProps> = ({ lead }) => {
+  const formattedWebsite = formatWebsiteUrl(lead.website);
+
   return (
     <div className="cw-tab-content">
       <div className="cw-grid-2">
@@ -29,8 +33,8 @@ export const GoogleBusinessTab: React.FC<GoogleBusinessTabProps> = ({ lead }) =>
         <div className="cw-info-block">
           <label className="label">Website</label>
           <div className="cw-info-value">
-            {lead.website ? (
-              <a href={lead.website} target="_blank" rel="noreferrer" className="text-primary flex items-center gap-1" style={{ textDecoration: 'none' }}>
+            {formattedWebsite ? (
+              <a href={formattedWebsite} target="_blank" rel="noopener noreferrer" className="text-primary flex items-center gap-1" style={{ textDecoration: 'none' }}>
                 {lead.website}
                 <ExternalLink size={12} />
               </a>

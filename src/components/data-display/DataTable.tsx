@@ -1,7 +1,7 @@
 import React from 'react';
 import { Lead, CallStatus } from '../../types/crm';
-import { STATUS_CONFIG, formatWhatsAppNumber } from '../../lib/constants';
-import { MessageCircle } from 'lucide-react';
+import { STATUS_CONFIG, formatWhatsAppNumber, formatWebsiteUrl } from '../../lib/constants';
+import { MessageCircle, ExternalLink } from 'lucide-react';
 
 interface DataTableProps {
   leads: Lead[];
@@ -16,6 +16,7 @@ export const DataTable: React.FC<DataTableProps> = ({ leads, onRowClick }) => {
           <tr>
             <th>Business Name</th>
             <th>Phone</th>
+            <th>Website</th>
             <th>Category</th>
             <th>Location</th>
             <th>Rating (Rev)</th>
@@ -29,11 +30,7 @@ export const DataTable: React.FC<DataTableProps> = ({ leads, onRowClick }) => {
           {leads.map((lead) => {
             const statusStyle = STATUS_CONFIG[lead.status] || STATUS_CONFIG['Not Called'];
             const waNumber = formatWhatsAppNumber(lead.phone);
-            
-            let priorityColor = '#6B7280';
-            if (lead.priority === 'High') priorityColor = '#DC2626';
-            if (lead.priority === 'Medium') priorityColor = '#F59E0B';
-            if (lead.priority === 'Low') priorityColor = '#16A34A';
+            const formattedWebsite = formatWebsiteUrl(lead.website);
 
             return (
               <tr key={lead.id} onClick={() => onRowClick && onRowClick(lead)} style={{ cursor: onRowClick ? 'pointer' : 'default' }}>
@@ -56,6 +53,23 @@ export const DataTable: React.FC<DataTableProps> = ({ leads, onRowClick }) => {
                       </a>
                     )}
                   </div>
+                </td>
+                <td>
+                  {formattedWebsite ? (
+                    <a
+                      href={formattedWebsite}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={lead.website || 'Visit Website'}
+                      onClick={e => e.stopPropagation()}
+                      style={{ color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none', fontSize: '12px' }}
+                    >
+                      <span>Link</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  ) : (
+                    <span style={{ color: 'var(--text-muted)' }}>-</span>
+                  )}
                 </td>
                 <td style={{ color: 'var(--text-muted)' }}>{lead.category || '-'}</td>
                 <td style={{ color: 'var(--text-muted)' }}>
@@ -102,7 +116,7 @@ export const DataTable: React.FC<DataTableProps> = ({ leads, onRowClick }) => {
           })}
           {leads.length === 0 && (
             <tr>
-              <td colSpan={9} style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)' }}>
+              <td colSpan={10} style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)' }}>
                 No leads found.
               </td>
             </tr>
@@ -112,3 +126,4 @@ export const DataTable: React.FC<DataTableProps> = ({ leads, onRowClick }) => {
     </div>
   );
 };
+
