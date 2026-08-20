@@ -21,8 +21,8 @@ export type Category =
   | 'Event venue'
   | 'Other';
 
-export type CallerName = 'User 1' | 'User 2';
-export type UserRole = 'Admin' | 'User 1' | 'User 2';
+export type CallerName = 'Sneha' | 'Aditya';
+export type UserRole = 'Admin' | 'Sneha' | 'Aditya';
 
 export interface Lead {
   id: string;

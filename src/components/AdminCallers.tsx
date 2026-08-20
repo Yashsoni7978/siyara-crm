@@ -3,8 +3,8 @@ import { PhoneCall, TrendingUp, Users } from 'lucide-react';
 
 export const AdminCallers: React.FC = () => {
   const callers = [
-    { id: 1, name: 'User 1', status: 'Active', leadsAssigned: 124, callsMade: 89, conversionRate: '12%' },
-    { id: 2, name: 'User 2', status: 'Active', leadsAssigned: 98, callsMade: 45, conversionRate: '8%' },
+    { id: 1, name: 'Sneha', status: 'Active', leadsAssigned: 124, callsMade: 89, conversionRate: '12%' },
+    { id: 2, name: 'Aditya', status: 'Active', leadsAssigned: 98, callsMade: 45, conversionRate: '8%' },
     { id: 3, name: 'Jane Doe', status: 'Offline', leadsAssigned: 45, callsMade: 12, conversionRate: '5%' },
   ];
 

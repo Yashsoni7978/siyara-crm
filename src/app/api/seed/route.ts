@@ -17,14 +17,14 @@ export async function GET() {
 
     // 3. Create Users
     const admin = await prisma.user.create({ data: { organizationId: org.id, name: 'Admin', email: 'admin@siyara.com', role: 'Admin' } });
-    const user1 = await prisma.user.create({ data: { organizationId: org.id, name: 'User 1', email: 'user1@siyara.com', role: 'Caller' } });
-    const user2 = await prisma.user.create({ data: { organizationId: org.id, name: 'User 2', email: 'user2@siyara.com', role: 'Caller' } });
+    const user1 = await prisma.user.create({ data: { organizationId: org.id, name: 'Sneha', email: 'sneha@siyara.com', role: 'Caller' } });
+    const user2 = await prisma.user.create({ data: { organizationId: org.id, name: 'Aditya', email: 'aditya@siyara.com', role: 'Caller' } });
 
     // 4. Map Initial Leads
     const leadsData = INITIAL_LEADS.map(lead => {
       let assignedUserId = null;
-      if (lead.assignedToId === 'User 1') assignedUserId = user1.id;
-      if (lead.assignedToId === 'User 2') assignedUserId = user2.id;
+      if (lead.assignedToId === 'Sneha') assignedUserId = user1.id;
+      if (lead.assignedToId === 'Aditya') assignedUserId = user2.id;
 
       return {
         organizationId: org.id,

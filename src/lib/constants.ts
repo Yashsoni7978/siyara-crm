@@ -1,6 +1,6 @@
 import { CallStatus, Category, Lead } from '../types/crm';
 
-export const CALLERS = ['User 1', 'User 2'] as const;
+export const CALLERS = ['Sneha', 'Aditya'] as const;
 
 export function formatWhatsAppNumber(phone?: string | null): string {
   if (!phone) return '';
@@ -108,7 +108,7 @@ export const INITIAL_LEADS: Lead[] = [
     category: 'Dentist',
     cityArea: 'Bandra West, Mumbai',
     listName: 'Batch 1 – 28 Jul 2026',
-    assignedToId: 'User 1',
+    assignedToId: 'Sneha',
     status: 'Interested',
     priority: 'High',
     notes: 'Dr. Mehta expressed interest in lead management software. Wants a callback on Thursday.',
@@ -131,7 +131,7 @@ export const INITIAL_LEADS: Lead[] = [
     category: 'Event Manager',
     cityArea: 'Andheri East, Mumbai',
     listName: 'Batch 1 – 28 Jul 2026',
-    assignedToId: 'User 2',
+    assignedToId: 'Aditya',
     status: 'Interested',
     priority: 'High',
     notes: 'Spoke with CEO Rajesh. Demo scheduled for Friday 3 PM.',
@@ -151,7 +151,7 @@ export const INITIAL_LEADS: Lead[] = [
     category: 'Physiotherapist',
     cityArea: 'Juhu, Mumbai',
     listName: 'Batch 1 – 28 Jul 2026',
-    assignedToId: 'User 1',
+    assignedToId: 'Sneha',
     status: 'Busy',
     priority: 'Medium',
     notes: 'Owner was busy with a patient. Asked to call back in the evening.',
@@ -171,7 +171,7 @@ export const INITIAL_LEADS: Lead[] = [
     category: 'Decorator',
     cityArea: 'Powai, Mumbai',
     listName: 'Batch 1 – 28 Jul 2026',
-    assignedToId: 'User 2',
+    assignedToId: 'Aditya',
     status: 'Converted',
     priority: 'Low',
     notes: 'Closed client! Paid advance deposit for campaign package.',
@@ -191,7 +191,7 @@ export const INITIAL_LEADS: Lead[] = [
     category: 'Anchor',
     cityArea: 'Lower Parel, Mumbai',
     listName: 'Batch 1 – 28 Jul 2026',
-    assignedToId: 'User 1',
+    assignedToId: 'Sneha',
     status: 'Not Called',
     priority: 'None',
     notes: '',
@@ -211,7 +211,7 @@ export const INITIAL_LEADS: Lead[] = [
     category: 'Event Planner',
     cityArea: 'Thane West',
     listName: 'Batch 1 – 28 Jul 2026',
-    assignedToId: 'User 2',
+    assignedToId: 'Aditya',
     status: 'Lost',
     priority: 'None',
     notes: 'Already using a local software agency.',
@@ -231,7 +231,7 @@ export const INITIAL_LEADS: Lead[] = [
     category: 'Doctor',
     cityArea: 'Worli, Mumbai',
     listName: 'Batch 1 – 28 Jul 2026',
-    assignedToId: 'User 1',
+    assignedToId: 'Sneha',
     status: 'No Answer',
     priority: 'Medium',
     notes: 'Rang 5 times, no response. Will try again tomorrow.',
@@ -251,7 +251,7 @@ export const INITIAL_LEADS: Lead[] = [
     category: 'Event Designer',
     cityArea: 'Malad West, Mumbai',
     listName: 'Batch 1 – 28 Jul 2026',
-    assignedToId: 'User 2',
+    assignedToId: 'Aditya',
     status: 'Not Called',
     priority: 'None',
     notes: '',

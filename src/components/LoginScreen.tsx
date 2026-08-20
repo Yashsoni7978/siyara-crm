@@ -51,9 +51,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
               }}
               style={{ backgroundColor: 'var(--bg-card)', cursor: 'pointer' }}
             >
-              <option value="Admin">Admin / Manager</option>
-              <option value="User 1">Caller Desk 1</option>
-              <option value="User 2">Caller Desk 2</option>
+              <option value="Admin">Manager</option>
+              <option value="Sneha">Sneha</option>
+              <option value="Aditya">Aditya</option>
             </select>
           </div>
 
@@ -92,7 +92,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
 
         <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '11px', color: 'var(--text-muted)' }}>
           <div>Default Passwords:</div>
-          <div style={{ marginTop: '4px' }}>Admin: changeme1 | User 1: changeme2 | User 2: changeme3</div>
+          <div style={{ marginTop: '4px' }}>Password for all accounts: Siyara123</div>
         </div>
       </div>
     </div>

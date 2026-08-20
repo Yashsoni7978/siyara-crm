@@ -145,8 +145,8 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
               </select>
               <select className="input-field" value={selectedCaller} onChange={e => { setSelectedCaller(e.target.value); setPage(1); }} style={{ width: '130px' }}>
                 <option value="ALL">All Callers</option>
-                <option value="User 1">User 1</option>
-                <option value="User 2">User 2</option>
+                <option value="Sneha">Sneha</option>
+                <option value="Aditya">Aditya</option>
               </select>
               <select className="input-field" value={selectedStatus} onChange={e => { setSelectedStatus(e.target.value); setPage(1); }} style={{ width: '130px' }}>
                 <option value="ALL">All Statuses</option>

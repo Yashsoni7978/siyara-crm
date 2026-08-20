@@ -11,23 +11,23 @@ export interface UserAccount {
 export const ACCOUNTS: Record<UserRole, UserAccount> = {
   Admin: {
     name: 'Admin',
-    password: 'changeme1',
+    password: 'Siyara123',
     role: 'admin',
-    label: 'Admin / Founder',
+    label: 'Manager',
     description: 'Overview dashboard, analytics, batch import & master database',
   },
-  'User 1': {
-    name: 'User 1',
-    password: 'changeme2',
+  'Sneha': {
+    name: 'Sneha',
+    password: 'Siyara123',
     role: 'caller',
-    label: 'User 1',
+    label: 'Sneha',
     description: 'Cold call desk, lead queue & call outcomes',
   },
-  'User 2': {
-    name: 'User 2',
-    password: 'changeme3',
+  'Aditya': {
+    name: 'Aditya',
+    password: 'Siyara123',
     role: 'caller',
-    label: 'User 2',
+    label: 'Aditya',
     description: 'Cold call desk, lead queue & call outcomes',
   },
 };

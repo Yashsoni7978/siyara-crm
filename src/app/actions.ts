@@ -3,15 +3,21 @@
 import { prisma } from '../lib/prisma';
 
 export async function getUserIdByName(name: string): Promise<string | null> {
-  try {
-    const user = await prisma.user.findFirst({
-      where: { name }
-    });
-    return user?.id || null;
-  } catch (error) {
-    console.error('Failed to get user by name', error);
-    return null;
+  const MAX_RETRIES = 3;
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const user = await prisma.user.findFirst({
+        where: { name }
+      });
+      return user?.id || null;
+    } catch (error) {
+      console.error(`Failed to get user by name (attempt ${attempt}/${MAX_RETRIES})`, error);
+      if (attempt < MAX_RETRIES) {
+        await new Promise(res => setTimeout(res, 500));
+      }
+    }
   }
+  return null;
 }
 
 // Helper to parse TSV/CSV from Instant Data Scraper
@@ -116,8 +122,8 @@ export async function executeImportBatch(leads: any[], organizationId: string) {
     
     if (users.length === 0) {
       // Fallback create callers if missing
-      const user1 = await prisma.user.create({ data: { name: 'User 1', email: 'user1@siyara.com', role: 'Caller', organizationId: activeOrgId } });
-      const user2 = await prisma.user.create({ data: { name: 'User 2', email: 'user2@siyara.com', role: 'Caller', organizationId: activeOrgId } });
+      const user1 = await prisma.user.create({ data: { name: 'Sneha', email: 'sneha@siyara.com', role: 'Caller', organizationId: activeOrgId } });
+      const user2 = await prisma.user.create({ data: { name: 'Aditya', email: 'aditya@siyara.com', role: 'Caller', organizationId: activeOrgId } });
       users = [user1, user2];
     }
     

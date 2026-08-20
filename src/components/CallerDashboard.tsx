@@ -45,12 +45,17 @@ export const CallerDashboard: React.FC<CallerDashboardProps> = ({ callerName, ac
   const [sortBy, setSortBy] = useState<SortField>('updatedAt');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  // Resolve User ID
+  // Resolve User ID (with retry for transient hot-reload DB blips)
   useEffect(() => {
     let mounted = true;
     const initUser = async () => {
       setIsInitializing(true);
-      const id = await getUserIdByName(callerName);
+      let id: string | null = null;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        id = await getUserIdByName(callerName);
+        if (id) break;
+        if (attempt < 2) await new Promise(res => setTimeout(res, 600));
+      }
       if (mounted) {
         setUserId(id);
         setIsInitializing(false);

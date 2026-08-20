@@ -19,24 +19,24 @@ export async function GET(request: Request) {
     });
 
     const user1 = await prisma.user.upsert({
-      where: { email: 'caller1@siyara.local' },
+      where: { email: 'sneha@siyara.com' },
       update: {},
       create: {
         id: 'a76155cd-c641-42b0-8213-df91de466597',
-        name: 'User 1',
-        email: 'caller1@siyara.local',
+        name: 'Sneha',
+        email: 'sneha@siyara.com',
         role: 'Caller',
         organizationId: org.id
       }
     });
 
     const user2 = await prisma.user.upsert({
-      where: { email: 'caller2@siyara.local' },
+      where: { email: 'aditya@siyara.com' },
       update: {},
       create: {
         id: 'c323e6bd-6235-4426-88bf-a8c5723e683e',
-        name: 'User 2',
-        email: 'caller2@siyara.local',
+        name: 'Aditya',
+        email: 'aditya@siyara.com',
         role: 'Caller',
         organizationId: org.id
       }
