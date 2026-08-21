@@ -13,14 +13,14 @@ async function run() {
     org = await prisma.organization.create({ data: { name: 'Siyara Enterprise Demo' } });
   }
 
-  let user1 = await prisma.user.findFirst({ where: { name: 'User 1' } });
+  let user1 = await prisma.user.findFirst({ where: { name: 'Sneha' } });
   if (!user1) {
-    user1 = await prisma.user.create({ data: { name: 'User 1', email: 'user1@siyara.com', role: 'Caller', organizationId: org.id } });
+    user1 = await prisma.user.create({ data: { name: 'Sneha', email: 'sneha@siyara.com', role: 'Caller', organizationId: org.id } });
   }
 
-  let user2 = await prisma.user.findFirst({ where: { name: 'User 2' } });
+  let user2 = await prisma.user.findFirst({ where: { name: 'Aditya' } });
   if (!user2) {
-    user2 = await prisma.user.create({ data: { name: 'User 2', email: 'user2@siyara.com', role: 'Caller', organizationId: org.id } });
+    user2 = await prisma.user.create({ data: { name: 'Aditya', email: 'aditya@siyara.com', role: 'Caller', organizationId: org.id } });
   }
 
   const callers = [user1, user2].filter(Boolean);
