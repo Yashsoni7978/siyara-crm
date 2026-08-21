@@ -7,7 +7,7 @@
 export async function register() {
   // Only run on the Node.js runtime (not Edge runtime)
   if (process.env.NEXT_RUNTIME === 'nodejs') {
-    const { seedIfEmpty } = await import('./src/lib/seed');
+    const { seedIfEmpty } = await import('./lib/seed');
     await seedIfEmpty();
   }
 }
